@@ -9,6 +9,7 @@ typedef struct
     char* Adresse;
     char* Date_de_naissance;
     unsigned int Numero_telephone;
+    unsigned int Numero_inscription;
     char* Adresse_email;
     char* Password;
     char* Pseudo;
