@@ -1,8 +1,7 @@
 #ifndef RUBRIQUE_H_INCLUDED
 #define RUBRIQUE_H_INCLUDED
 
-typedef struct 
-{
+typedef struct{
     char* Nom ;
     char* Date_de_poste;
     unsigned int Numero_inscription;
