@@ -8,5 +8,6 @@ typedef struct
     char* Date;
     unsigned int Numero_incription;
 
-} MENU;
+}MENU;
+
 #endif

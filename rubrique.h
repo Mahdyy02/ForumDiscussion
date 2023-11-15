@@ -9,5 +9,6 @@ typedef struct
     char* Message;
     char* Liste_internet;
 
-} RUBRIQUE;
+}RUBRIQUE;
+
 #endif
