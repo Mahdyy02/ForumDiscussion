@@ -27,24 +27,24 @@ void Saisir_date(Date *d){
                 if((d->jour) >= 1 && (d->jour) <= 31){
                     break;
                 }
-                printf("Le nombre du jour pour le mois %i dans etre compris entre 1 et 31\n", d->mois);    
+                printf("Le nombre du jour pour le mois %i doit être compris entre 1 et 31\n", d->mois);    
             }else{
                 if((d->jour) >= 1 && (d->jour) <= 30){
                     break;
                 }
-                printf("Le nombre du jour pour le mois %i dans etre compris entre 1 et 30\n", d->mois);    
+                printf("Le nombre du jour pour le mois %i doit être compris entre 1 et 30\n", d->mois);    
             }
         else{
             if((d->mois)%2 == 0){
                 if((d->jour) >= 1 && (d->jour) <= 31){
                     break;
                 }
-                printf("Le nombre du jour pour le mois %i dans etre compris entre 1 et 31\n", d->mois);    
+                printf("Le nombre du jour pour le mois %i doit être compris entre 1 et 31\n", d->mois);    
             }else{
                 if((d->jour) >= 1 & (d->jour) <= 30){
                     break;
                 }
-                printf("Le nombre du jour pour le mois %i dans etre compris entre 1 et 30\n", d->mois);    
+                printf("Le nombre du jour pour le mois %i doit être compris entre 1 et 30\n", d->mois);    
             }
         }    
         
