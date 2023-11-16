@@ -41,7 +41,7 @@ void inscription(UTILISATEUR* u){
 
     while(1){
         printf("Nom: ");
-        u->Nom = malloc(MAX_STRING_LENGTH);
+        u->Nom = malloc(MAX_STRING_LENGTH*sizeof(char));
         fgets(u->Nom, MAX_STRING_LENGTH, stdin);
         (u->Nom)[strlen(u->Nom) - 1] = '\0';
 
@@ -60,7 +60,7 @@ void inscription(UTILISATEUR* u){
 
     while(1){
         printf("Prénom: ");
-        u->Prenom = malloc(MAX_STRING_LENGTH);
+        u->Prenom = malloc(MAX_STRING_LENGTH*sizeof(char));
         fgets(u->Prenom, MAX_STRING_LENGTH, stdin);
         (u->Prenom)[strlen(u->Prenom) - 1] = '\0';
 
@@ -78,7 +78,7 @@ void inscription(UTILISATEUR* u){
     }
 
     printf("Adresse: ");
-    u->Adresse = malloc(MAX_STRING_LENGTH);
+    u->Adresse = malloc(MAX_STRING_LENGTH*sizeof(char));
     fgets(u->Adresse, MAX_STRING_LENGTH, stdin);
     (u->Adresse)[strlen(u->Adresse) - 1] = '\0';
 
@@ -95,7 +95,7 @@ void inscription(UTILISATEUR* u){
     while(1){
 
         printf("Adresse_email: ");
-        u->Adresse_email = malloc(MAX_STRING_LENGTH);
+        u->Adresse_email = malloc(MAX_STRING_LENGTH*sizeof(char));
         fgets(u->Adresse_email, MAX_STRING_LENGTH, stdin);
         (u->Adresse_email)[strlen(u->Adresse_email) - 1] = '\0';
 
@@ -118,7 +118,7 @@ void inscription(UTILISATEUR* u){
     while(1){
 
         printf("Password: ");
-        u->Password = malloc(MAX_STRING_LENGTH);
+        u->Password = malloc(MAX_STRING_LENGTH*sizeof(char));
         fgets(u->Password, MAX_STRING_LENGTH, stdin);
         (u->Password)[strlen(u->Password) - 1] = '\0';
 
@@ -139,7 +139,7 @@ void inscription(UTILISATEUR* u){
     }
 
     printf("Choisissez votre pseudo: ");
-    u->Pseudo = malloc(MAX_STRING_LENGTH);
+    u->Pseudo = malloc(MAX_STRING_LENGTH*sizeof(char));
     fgets(u->Pseudo, MAX_STRING_LENGTH, stdin);
     (u->Pseudo)[strlen(u->Pseudo) - 1] = '\0'; 
 
@@ -154,4 +154,28 @@ void inscription(UTILISATEUR* u){
     free(u->Password);
     free(u->Pseudo);
     free(u);
+}
+
+
+void affichage(UTILISATEUR u){
+    printf("le nom est: %s\n", u.Nom);
+    printf("le prénom est: %s\n",u.Prenom);
+    printf("la date de naissance est : %s\n",u.jour);
+    printf("le numéro de téléphone ")
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
