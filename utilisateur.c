@@ -7,6 +7,29 @@
 
 #define MAX_STRING_LENGTH 100
 
+int frequency(char* s, int size, char c){
+
+    int freq = 0;
+    
+    for(int i = 0; i < size; i++){
+        if(s[i] == c)
+            freq++;
+    }
+
+    return freq;
+
+}
+
+int first_index(char* s, int size, char c){
+    
+    for(int i = 0; i < size; i++){
+        if(s[i] == c)
+            return i;
+
+        return -1;    
+    }
+}
+
 void inscription(UTILISATEUR* u){
 
 
@@ -69,15 +92,51 @@ void inscription(UTILISATEUR* u){
 
     while(getchar() != '\n');
 
-    printf("Adresse_email: ");
-    u->Adresse_email = malloc(MAX_STRING_LENGTH);
-    fgets(u->Adresse_email, MAX_STRING_LENGTH, stdin);
-    (u->Adresse_email)[strlen(u->Adresse_email) - 1] = '\0';
+    while(1){
 
-    printf("Password: ");
-    u->Password = malloc(MAX_STRING_LENGTH);
-    fgets(u->Password, MAX_STRING_LENGTH, stdin);
-    (u->Password)[strlen(u->Password) - 1] = '\0';
+        printf("Adresse_email: ");
+        u->Adresse_email = malloc(MAX_STRING_LENGTH);
+        fgets(u->Adresse_email, MAX_STRING_LENGTH, stdin);
+        (u->Adresse_email)[strlen(u->Adresse_email) - 1] = '\0';
+
+        if(frequency(u->Adresse_email, strlen(u->Adresse_email), '@') == 1 && frequency(u->Adresse_email, strlen(u->Adresse_email), '.') >= 1){    
+            
+            int freq_point = 0;
+            for(int j = first_index(u->Adresse, strlen(u->Adresse), *strchr(u->Adresse_email, '@')) + 1; j < strlen(u->Adresse_email); j++){
+                if((u->Adresse_email)[j] == '.')
+                    freq_point++;
+            }
+
+            if(freq_point == 1)
+                break;  
+        }
+
+        printf("Le format d'un email est user@domaine.xyz\n");    
+
+    }
+
+    while(1){
+
+        printf("Password: ");
+        u->Password = malloc(MAX_STRING_LENGTH);
+        fgets(u->Password, MAX_STRING_LENGTH, stdin);
+        (u->Password)[strlen(u->Password) - 1] = '\0';
+
+        int upper = 0; int symbol = 0;
+        for(int i = 0; i < strlen(u->Password); i++){
+            if(ispunct((u->Password)[i]) || isdigit((u->Password)[i])){
+                symbol++;
+            }else if(isupper((u->Password)[i])){
+                upper++;
+            }
+        }
+
+        if(strlen(u->Password) > 8 && upper >= 1 && symbol >= 2)
+            break;
+
+        printf("Le mot de passe doit être de longueur supèrieur à 8, contenir un chiffre majuscule et deux symbole.\n");    
+
+    }
 
     printf("Choisissez votre pseudo: ");
     u->Pseudo = malloc(MAX_STRING_LENGTH);
@@ -85,6 +144,8 @@ void inscription(UTILISATEUR* u){
     (u->Pseudo)[strlen(u->Pseudo) - 1] = '\0'; 
 
     printf("Félicitations vous êtes inscrits avec succés.\n");
+
+    // A enlever plus tard
 
     free(u->Nom);
     free(u->Prenom);
