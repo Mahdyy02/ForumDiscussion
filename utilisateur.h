@@ -16,7 +16,7 @@ typedef struct{
 
 }UTILISATEUR;
 
-void inscription(UTILISATEUR* u);
-void affichage(UTILISATEUR u);
+void inscription(UTILISATEUR*);
+void affichage(UTILISATEUR);
 
 #endif
