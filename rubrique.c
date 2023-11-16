@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include "rubrique.h"
 
 #define MAX_STRING_LENGTH 100
@@ -25,22 +27,29 @@ void saisir_rubrique(RUBRIQUE* r){
         printf("ERREUR: Le Theme de la rubrique ne doit contenir que des caracteres\n");    
     }
 
-    r->Liste_internet = (char**)malloc(MAX_STRING_LENGTH*sizeof(char*));
-    
-    int i = 0; // NEED TO BE BACK HERE LATER
+    r->Numero_de_sites = 0;
+    r->Liste_internet = (char**) malloc(MAX_STRING_LENGTH * sizeof(char*));
     do{
-        printf("Donner le site (Laissez vide pour terminer): ");
-        (r->Liste_internet)[i] = (char*)malloc(MAX_STRING_LENGTH*sizeof(char));
+        printf("Le contenu de message(vide pour quitter): ");
+        unsigned int i = r->Numero_de_sites;
+        (r->Liste_internet)[i] = (char*) malloc(MAX_STRING_LENGTH * sizeof(char));
         fgets((r->Liste_internet)[i], MAX_STRING_LENGTH, stdin);
-        i++;
+        // (m->Textes)[i][strlen((m->Textes)[i])-1] = '\0';
+        (r->Numero_de_sites)++;
 
-    } while ((r->Liste_internet)[i-1] != "\n");
+    } while(strcmp((r->Liste_internet)[(r->Numero_de_sites) - 1], "\n") != 0);
+    
     
 
 }
 
-void affichage(RUBRIQUE r){
-    printf("le théme du rubrique est: %s\n",r.Theme);
-    printf("la date de poste du premier rubrique est: %i/%i/%i/\n",r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
-    printf("les liste internets reliés sont: %s\n",r.Liste_internet);
+void affichage_rubrique(RUBRIQUE r){
+    printf("Le theme du rubrique est: %s\n",r.Theme);
+    printf("La date de poste du premier rubrique est: %i/%i/%i\n",r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
+    
+    for(int i=0;i<r.Numero_de_sites-1;i++){
+        printf("liste %i: %s\n",i+1,(r.Liste_internet)[i]);
+
+    }
+   
 }

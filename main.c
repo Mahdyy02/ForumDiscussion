@@ -6,10 +6,10 @@
 
 int main(){
 
-    MESSAGES m;
+    RUBRIQUE r;
 
-    saisir_message(MESSAGES* m);
-    affichage_message(MESSAGES m);
+    saisir_rubrique(&r);
+    affichage_rubrique(r);
 
     return 0;
 }
