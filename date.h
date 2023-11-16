@@ -8,6 +8,6 @@ typedef struct{
 
 }Date;
 
-void Saisir_date(Date*);
+void Saisir_date(Date *d);
 
 #endif

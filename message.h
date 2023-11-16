@@ -4,10 +4,11 @@
 
 typedef struct{
     char* Titre;
-    char* Texte;
+    char** Textes;
     Date Date_de_poste;
     unsigned int Numero_incription;
-
-}MENU;
+    unsigned int Numero_de_messages; // TO BE BACK HERE
+    
+}MESSAGE;
 
 #endif

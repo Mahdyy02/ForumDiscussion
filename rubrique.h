@@ -3,12 +3,15 @@
 #include "date.h"
 
 typedef struct{
-    char* Théme ;
+    char* Theme;
     Date Date_de_poste;
     unsigned int Numero_inscription;
     char* Message;
     char* Liste_internet;
 
 }RUBRIQUE;
+
+
+void saisir_rubrique(RUBRIQUE*);
 
 #endif

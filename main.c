@@ -8,5 +8,5 @@ int main(){
 
     UTILISATEUR u;
     inscription(&u);
-
+    affichage(u);
 }

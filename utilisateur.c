@@ -30,7 +30,7 @@ int first_index(char* s, int size, char c){
     }
 }
 
-void inscription(UTILISATEUR* u){
+void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
 
 
     printf("********************************************************\n");
@@ -41,7 +41,7 @@ void inscription(UTILISATEUR* u){
 
     while(1){
         printf("Nom: ");
-        u->Nom = malloc(MAX_STRING_LENGTH*sizeof(char));
+        u->Nom = malloc(MAX_STRING_LENGTH);
         fgets(u->Nom, MAX_STRING_LENGTH, stdin);
         (u->Nom)[strlen(u->Nom) - 1] = '\0';
 
@@ -60,7 +60,7 @@ void inscription(UTILISATEUR* u){
 
     while(1){
         printf("Prénom: ");
-        u->Prenom = malloc(MAX_STRING_LENGTH*sizeof(char));
+        u->Prenom = malloc(MAX_STRING_LENGTH);
         fgets(u->Prenom, MAX_STRING_LENGTH, stdin);
         (u->Prenom)[strlen(u->Prenom) - 1] = '\0';
 
@@ -78,7 +78,7 @@ void inscription(UTILISATEUR* u){
     }
 
     printf("Adresse: ");
-    u->Adresse = malloc(MAX_STRING_LENGTH*sizeof(char));
+    u->Adresse = malloc(MAX_STRING_LENGTH);
     fgets(u->Adresse, MAX_STRING_LENGTH, stdin);
     (u->Adresse)[strlen(u->Adresse) - 1] = '\0';
 
@@ -95,7 +95,7 @@ void inscription(UTILISATEUR* u){
     while(1){
 
         printf("Adresse_email: ");
-        u->Adresse_email = malloc(MAX_STRING_LENGTH*sizeof(char));
+        u->Adresse_email = malloc(MAX_STRING_LENGTH);
         fgets(u->Adresse_email, MAX_STRING_LENGTH, stdin);
         (u->Adresse_email)[strlen(u->Adresse_email) - 1] = '\0';
 
@@ -118,7 +118,7 @@ void inscription(UTILISATEUR* u){
     while(1){
 
         printf("Password: ");
-        u->Password = malloc(MAX_STRING_LENGTH*sizeof(char));
+        u->Password = malloc(MAX_STRING_LENGTH);
         fgets(u->Password, MAX_STRING_LENGTH, stdin);
         (u->Password)[strlen(u->Password) - 1] = '\0';
 
@@ -139,30 +139,28 @@ void inscription(UTILISATEUR* u){
     }
 
     printf("Choisissez votre pseudo: ");
-    u->Pseudo = malloc(MAX_STRING_LENGTH*sizeof(char));
+    u->Pseudo = malloc(MAX_STRING_LENGTH);
     fgets(u->Pseudo, MAX_STRING_LENGTH, stdin);
     (u->Pseudo)[strlen(u->Pseudo) - 1] = '\0'; 
 
     printf("Félicitations vous êtes inscrits avec succés.\n");
 
-    // A enlever plus tard
-
-    free(u->Nom);
-    free(u->Prenom);
-    free(u->Adresse);
-    free(u->Adresse_email);
-    free(u->Password);
-    free(u->Pseudo);
-    free(u);
 }
 
 
 void affichage(UTILISATEUR u){
+
+    printf("\n\n\n\n\n");
+    printf("********************************************************\n");
+    printf("*                                                      *\n");
+    printf("*                 Profil de %s                  *\n", u.Pseudo);
+    printf("*                                                      *\n");
+    printf("********************************************************\n");
+
     printf("le nom est: %s\n", u.Nom);
     printf("le prénom est: %s\n",u.Prenom);
-    printf("l'adresse est:%s\n",u.Adresse);
-    printf("la date de naissance est: %s/%s/%s/\n ",u.Date_de_naissance.jour,u.Date_de_naissance.mois,u.Date_de_naissance.annee);
-    printf("le numéro de téléphone est: %s\n",u.Numero_telephone);
-    printf("l'adresse e_amil est:%s\n",u.Adresse_email);
-    printf("le pseudo est:%s\n",u.Pseudo);
+    printf("l'adresse est: %s\n",u.Adresse);
+    printf("la date de naissance est: %i/%i/%i\n",u.Date_de_naissance.jour,u.Date_de_naissance.mois,u.Date_de_naissance.annee);
+    printf("le numéro de téléphone est: %u\n",u.Numero_telephone);
+    printf("l'adresse e_amil est: %s\n",u.Adresse_email);
 }
