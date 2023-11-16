@@ -1,7 +1,26 @@
 #include <stdio.h>
 #include "message.h"
 
-void affichage (MESSAGE m){
+#define MAX_STRING_LENGTH 100
+
+void saisir_message(MESSAGE* m){
+    printf("Le titre de message est: ");
+    m->Titre = (char*)malloc(MAX_STRING_LENGTH*sizeof(char));
+    fgets(m->Titre, MAX_STRING_LENGTH, stdin);
+
+    m->Numero_de_messages = 0;
+    m->Textes = (char**) malloc(MAX_STRING_LENGTH * sizeof(char*));
+    do{
+        printf("Le contenu de message(vide pour quitter): ");
+        unsigned int i = m->Numero_de_messages;
+        (m->Textes)[i] = (char*) malloc(MAX_STRING_LENGTH * sizeof(char));
+        fgets((m->Textes)[i], MAX_STRING_LENGTH, stdin);
+        (m->Numero_de_messages)++;
+    } while ((m->Textes)[(m->Numero_de_messages)-1] != "\n");
+    
+}
+
+void affichage_message(MESSAGE m){
 
     for(int i = 0; i < m.Numero_de_messages; i++){
 
