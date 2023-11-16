@@ -160,22 +160,9 @@ void inscription(UTILISATEUR* u){
 void affichage(UTILISATEUR u){
     printf("le nom est: %s\n", u.Nom);
     printf("le prénom est: %s\n",u.Prenom);
-    printf("la date de naissance est : %s\n",u.jour);
-    printf("le numéro de téléphone ")
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    printf("l'adresse est:%s\n",u.Adresse);
+    printf("la date de naissance est: %s/%s/%s/\n ",u.Date_de_naissance.jour,u.Date_de_naissance.mois,u.Date_de_naissance.annee);
+    printf("le numéro de téléphone est: %s\n",u.Numero_telephone);
+    printf("l'adresse e_amil est:%s\n",u.Adresse_email);
+    printf("le pseudo est:%s\n",u.Pseudo);
 }
