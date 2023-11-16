@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "message.h"
 
 #define MAX_STRING_LENGTH 100
 
-void saisir_message(MESSAGE* m){
+void saisir_message(MESSAGES* m){
     printf("Le titre de message est: ");
     m->Titre = (char*)malloc(MAX_STRING_LENGTH*sizeof(char));
     fgets(m->Titre, MAX_STRING_LENGTH, stdin);
@@ -20,7 +21,7 @@ void saisir_message(MESSAGE* m){
     
 }
 
-void affichage_message(MESSAGE m){
+void affichage_message(MESSAGES m){
 
     for(int i = 0; i < m.Numero_de_messages; i++){
 

@@ -25,7 +25,7 @@ void saisir_rubrique(RUBRIQUE* r){
         printf("ERREUR: Le Theme de la rubrique ne doit contenir que des caracteres\n");    
     }
 
-    r->Liste_internet = (char**)malloc(MAX_STRING_LENGTH*sizeof(char));
+    r->Liste_internet = (char**)malloc(MAX_STRING_LENGTH*sizeof(char*));
     
     int i = 0; // NEED TO BE BACK HERE LATER
     do{

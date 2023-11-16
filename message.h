@@ -2,8 +2,6 @@
 #define MESSAGE_H_INCLUDED
 #include "date.h"
 
-#define MAX_STRING_LENGTH 100
-
 typedef struct{
     char* Titre;
     char** Textes;
@@ -11,9 +9,9 @@ typedef struct{
     unsigned int Numero_incription;
     unsigned int Numero_de_messages; // TO BE BACK HERE
     
-}MESSAGE;
+}MESSAGES;
 
-void saisir_message(MESSAGE*);
-void affichage_message(MESSAGE);
+void saisir_message(MESSAGES*);
+void affichage_message(MESSAGES);
 
 #endif

@@ -6,7 +6,10 @@
 
 int main(){
 
-    UTILISATEUR u;
-    inscription(&u);
-    affichage(u);
+    MESSAGES m;
+
+    saisir_message(MESSAGES* m);
+    affichage_message(MESSAGES m);
+
+    return 0;
 }
