@@ -26,7 +26,8 @@ int first_index(char* s, int size, char c){
         if(s[i] == c)
             return i;
 
-        return -1;    
+        if(i == (strlen(s) - 1) && s[i] != c)
+            return -1;       
     }
 }
 
@@ -99,19 +100,19 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
         fgets(u->Adresse_email, MAX_STRING_LENGTH, stdin);
         (u->Adresse_email)[strlen(u->Adresse_email) - 1] = '\0';
 
-        if(frequency(u->Adresse_email, strlen(u->Adresse_email), '@') == 1 && frequency(u->Adresse_email, strlen(u->Adresse_email), '.') >= 1){    
-            
+        if(frequency(u->Adresse_email, strlen(u->Adresse_email), '@') == 1 && frequency(u->Adresse_email, strlen(u->Adresse_email), '.') >= 1){   
+
             int freq_point = 0;
-            for(int j = first_index(u->Adresse, strlen(u->Adresse), *strchr(u->Adresse_email, '@')) + 1; j < strlen(u->Adresse_email); j++){
+            for(int j = first_index(u->Adresse_email, strlen(u->Adresse_email), '@') + 1; j < strlen(u->Adresse_email); j++){
                 if((u->Adresse_email)[j] == '.')
                     freq_point++;
             }
 
-            if(freq_point == 1)
+            if(freq_point <= 2)
                 break;  
         }
 
-        printf("Le format d'un email est user@domaine.xyz\n");    
+        printf("Le format d'un email est user@domaine.abc.xyz\n");    
 
     }
 
