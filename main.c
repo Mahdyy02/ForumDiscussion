@@ -3,9 +3,7 @@
 #include "message.h"
 #include "rubrique.h"
 #include "utilisateur.h"
-
-UTILISATEUR u;
-RUBRIQUE r;
+#include "global.h"
 
 void Menu(){
 
@@ -72,11 +70,17 @@ int main(){
         switch(c){
         case 1:
             inscription(&u);
-            Menu();
+            if(&u != NULL){
+                (f.Nombre_utilisateurs)++;
+                sauvegarder_utilisateur(u);
+                Menu();
+            }
             break;
 
         case 2:
+            printf("Donner votre pseudo en tant que invité: ");
             scanf("%s", &pseudo_invite);
+            (f.Nombre_invités)++;
             Menu();
             break;    
         

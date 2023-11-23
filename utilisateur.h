@@ -18,5 +18,6 @@ typedef struct{
 
 void inscription(UTILISATEUR*);
 void affichage(UTILISATEUR);
+void sauvegarder_utilisateur(UTILISATEUR);
 
 #endif

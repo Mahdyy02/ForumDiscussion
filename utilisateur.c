@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "utilisateur.h"
 #include "date.h"
+#include "forum.h"
+#include "global.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -164,4 +166,21 @@ void affichage(UTILISATEUR u){
     printf("la date de naissance est: %i/%i/%i\n",u.Date_de_naissance.jour,u.Date_de_naissance.mois,u.Date_de_naissance.annee);
     printf("le numéro de téléphone est: %u\n",u.Numero_telephone);
     printf("l'adresse e_amil est: %s\n",u.Adresse_email);
+}
+
+
+void sauvegarder_utilisateur(UTILISATEUR u){
+
+    FILE *Fichier_utilisateurs = fopen("utilisateurs.txt", "a");
+
+    if (Fichier_utilisateurs == NULL) {
+        perror("Erreur d'ouverture du fichier utilisateur.\n");
+        exit(0);
+    }
+
+    u.Administrateur = 0;
+    u.Numero_inscription = f.Nombre_utilisateurs;
+
+    fprintf(Fichier_utilisateurs ,"%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i\n", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_inscription, u.Adresse_email, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur);
+
 }
