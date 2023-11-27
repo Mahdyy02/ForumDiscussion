@@ -9,5 +9,5 @@ typedef struct{
 }Date;
 
 void Saisir_date(Date *d);
-
+Date charger_date(char*);
 #endif

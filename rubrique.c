@@ -7,6 +7,8 @@
 #define MAX_STRING_LENGTH 100
 
 void saisir_rubrique(RUBRIQUE* r){
+
+        r->Nombre_messages = 0;
     
         while(1){
         printf("Theme de la rubrique: ");
@@ -30,7 +32,7 @@ void saisir_rubrique(RUBRIQUE* r){
     r->Numero_de_sites = 0;
     r->Liste_internet = (char**) malloc(MAX_STRING_LENGTH * sizeof(char*));
     do{
-        printf("Le contenu de message(vide pour quitter): ");
+        printf("Le nom du site(vide pour quitter): ");
         unsigned int i = r->Numero_de_sites;
         (r->Liste_internet)[i] = (char*) malloc(MAX_STRING_LENGTH * sizeof(char));
         fgets((r->Liste_internet)[i], MAX_STRING_LENGTH, stdin);
@@ -38,7 +40,6 @@ void saisir_rubrique(RUBRIQUE* r){
         (r->Numero_de_sites)++;
 
     } while(strcmp((r->Liste_internet)[(r->Numero_de_sites) - 1], "\n") != 0);
-    
     
 
 }

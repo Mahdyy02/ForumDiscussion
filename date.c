@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "date.h"
 
 void Saisir_date(Date *d){
@@ -54,4 +56,32 @@ void Saisir_date(Date *d){
     scanf("%d", &(d->annee));
 
 
+}
+
+Date charger_date(char* chaine_date){
+
+    Date d;
+
+    char *jeton = strtok(chaine_date, "/");
+    int indice = 0;
+
+    while (jeton != NULL) {
+        
+        switch (indice){
+        case 0:
+            d.jour = atoi(jeton);
+            break;
+        case 1:
+            d.mois = atoi(jeton);
+            break;
+        case 2:
+            d.annee = atoi(jeton);
+            break;
+        }
+
+        indice++;
+        jeton = strtok(NULL, ";");
+    }
+
+    return d;
 }

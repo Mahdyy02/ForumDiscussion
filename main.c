@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "message.h"
 #include "rubrique.h"
 #include "utilisateur.h"
+#include "forum.h"
 #include "global.h"
 
 void Menu(){
@@ -55,43 +55,54 @@ void Menu(){
 
 int main(){
 
-    int c;
-    char pseudo_invite[100];
+    MESSAGES m;
 
-    while(1){
+    saisir_rubrique(&r);
+    saisir_message(&m);
 
-        printf("1. Register un nouveau compte\n");
-        printf("2. Entrer en tant que invité\n");
-        printf("3. Quitter\n");
-        printf("Choix: "); scanf("%i", &c);
+    sauvegarder_message(m,r);
 
-        while(getchar() != '\n');
+    // int c;
+    // char pseudo_invite[100];
+    // strcpy(f.Adresse_internet, "forum-de-discussion.com");
 
-        switch(c){
-        case 1:
-            inscription(&u);
-            if(&u != NULL){
-                (f.Nombre_utilisateurs)++;
-                sauvegarder_utilisateur(u);
-                Menu();
-            }
-            break;
+    // saisir_forum();
 
-        case 2:
-            printf("Donner votre pseudo en tant que invité: ");
-            scanf("%s", &pseudo_invite);
-            (f.Nombre_invités)++;
-            Menu();
-            break;    
+    // while(1){
+
+    //     printf("1. Register un nouveau compte\n");
+    //     printf("2. Entrer en tant que invité\n");
+    //     printf("3. Quitter\n");
+    //     printf("Choix: "); scanf("%i", &c);
+
+    //     while(getchar() != '\n');
+
+    //     switch(c){
+    //     case 1:
+    //         inscription(&u);
+    //         if(&u != NULL){
+    //             (f.Nombre_utilisateurs)++;
+    //             sauvegarder_utilisateur(u);
+    //             Menu();
+    //         }
+    //         break;
+
+    //     case 2:
+    //         printf("Donner votre pseudo en tant que invité: ");
+    //         scanf("%s", pseudo_invite);
+    //         (f.Nombre_invites)++;
+    //         Menu();
+    //         break;    
         
-        case 3:
-            exit(0);
-            break;
+    //     case 3:
+    //         exit(0);
+    //         break;
 
-        default:
-            break;
-        }
+    //     default:
+    //         break;
+    //     }
 
-    }
+    // }
 
+    return 0;
 }

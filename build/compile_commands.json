@@ -1,0 +1,38 @@
+[
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\main.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\main.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/main.c",
+  "output": "CMakeFiles/Forum.dir/main.c.obj"
+},
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\date.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\date.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/date.c",
+  "output": "CMakeFiles/Forum.dir/date.c.obj"
+},
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\forum.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\forum.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/forum.c",
+  "output": "CMakeFiles/Forum.dir/forum.c.obj"
+},
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\message.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\message.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/message.c",
+  "output": "CMakeFiles/Forum.dir/message.c.obj"
+},
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\rubrique.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\rubrique.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/rubrique.c",
+  "output": "CMakeFiles/Forum.dir/rubrique.c.obj"
+},
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\utilisateur.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\utilisateur.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/utilisateur.c",
+  "output": "CMakeFiles/Forum.dir/utilisateur.c.obj"
+}
+]

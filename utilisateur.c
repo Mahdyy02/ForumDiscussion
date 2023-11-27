@@ -8,6 +8,7 @@
 #include <ctype.h>
 
 #define MAX_STRING_LENGTH 100
+#define MAX_LINE_LENGTH 256
 
 int frequency(char* s, int size, char c){
 
@@ -24,7 +25,7 @@ int frequency(char* s, int size, char c){
 
 int first_index(char* s, int size, char c){
     
-    for(int i = 0; i < size; i++){
+    for(unsigned int i = 0; i < (unsigned int)size; i++){
         if(s[i] == c)
             return i;
 
@@ -49,7 +50,7 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
         (u->Nom)[strlen(u->Nom) - 1] = '\0';
 
         int valid_string = 1;
-        for(int i = 0; i < strlen(u->Nom) - 1;i++){
+        for(unsigned int i = 0; i < strlen(u->Nom) - 1;i++){
             if(!isupper(u->Nom[i]) && !islower(u->Nom[i]) || isdigit(u->Nom[i])){
                 valid_string = 0;
                 break;
@@ -68,7 +69,7 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
         (u->Prenom)[strlen(u->Prenom) - 1] = '\0';
 
         int valid_string = 1;
-        for(int i = 0; i < strlen(u->Prenom) - 1;i++){
+        for(unsigned int i = 0; i < strlen(u->Prenom) - 1;i++){
             if(!isupper(u->Prenom[i]) && !islower(u->Prenom[i]) || isdigit(u->Prenom[i])){
                 valid_string = 0;
                 break;
@@ -105,7 +106,7 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
         if(frequency(u->Adresse_email, strlen(u->Adresse_email), '@') == 1 && frequency(u->Adresse_email, strlen(u->Adresse_email), '.') >= 1){   
 
             int freq_point = 0;
-            for(int j = first_index(u->Adresse_email, strlen(u->Adresse_email), '@') + 1; j < strlen(u->Adresse_email); j++){
+            for(unsigned int j = first_index(u->Adresse_email, strlen(u->Adresse_email), '@') + 1; j < strlen(u->Adresse_email); j++){
                 if((u->Adresse_email)[j] == '.')
                     freq_point++;
             }
@@ -126,7 +127,7 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
         (u->Password)[strlen(u->Password) - 1] = '\0';
 
         int upper = 0; int symbol = 0;
-        for(int i = 0; i < strlen(u->Password); i++){
+        for(unsigned int i = 0; i < strlen(u->Password); i++){
             if(ispunct((u->Password)[i]) || isdigit((u->Password)[i])){
                 symbol++;
             }else if(isupper((u->Password)[i])){
@@ -181,6 +182,74 @@ void sauvegarder_utilisateur(UTILISATEUR u){
     u.Administrateur = 0;
     u.Numero_inscription = f.Nombre_utilisateurs;
 
-    fprintf(Fichier_utilisateurs ,"%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i\n", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_inscription, u.Adresse_email, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur);
+    fprintf(Fichier_utilisateurs ,"%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i\n", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_telephone, u.Numero_inscription, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur);
 
+    fclose(Fichier_utilisateurs);
+}
+
+void charger_utilisateur(){
+
+    FILE *Fichier_utilisateurs = fopen("utilisateurs.txt", "r");
+
+    char line[MAX_LINE_LENGTH];
+
+    if (Fichier_utilisateurs == NULL) {
+        perror("Erreur de l'ouverture du fichier message.\n");
+        exit(1);
+    }
+
+
+    while (fgets(line, sizeof(line), Fichier_utilisateurs) != NULL) {
+
+        UTILISATEUR u;
+            
+        int indice_attribut = 0; // pour connaitre les differents attributs
+        char *jeton = strtok(line, ";");
+
+        while (jeton != NULL) {
+
+            switch (indice_attribut){
+
+                case 0:
+                    u.Nom = jeton;
+                    break;
+                case 1:
+                    u.Prenom = jeton;
+                    break;
+                case 2:
+                    u.Adresse = jeton;
+                    break;
+                case 4:
+                    u.Date_de_naissance = charger_date(jeton);
+                    break;
+                case 3:
+                    u.Numero_telephone = (unsigned int)jeton;
+                    break;    
+                case 5:
+                    u.Numero_inscription = (unsigned int)jeton;
+                    break;
+                case 6:
+                    u.Adresse_email = jeton;
+                    break;
+                case 7:
+                    u.Password = jeton;
+                    break;
+                case 8:
+                    u.Pseudo = jeton;
+                    break;
+                case 9:
+                    u.Administrateur = (int)jeton;
+                    break;   
+
+            }
+
+            indice_attribut++;
+            jeton = strtok(NULL, ";");
+        }
+
+        (f.Utilisateurs)[u.Numero_inscription] = u; 
+
+    }
+    
+    fclose(Fichier_utilisateurs);
 }

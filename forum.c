@@ -2,19 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include "forum.h"
+#include "global.h"
+#include <string.h>
 
 #define MAX_STRING_LENGTH 100
 
-void saisir_forum(FORUM f){
+
+void saisir_forum(){
 
     while (1){ 
 
         char adresse_entree[MAX_STRING_LENGTH];
 
         printf("Donner l'adresse internet du forum: ");
-        scanf("%s", &adresse_entree);
+        scanf("%s", adresse_entree);
         
-        if(strcmp(adresse_entree, f.Adresse_internet) != 0){
+        if(strcmp(adresse_entree, f.Adresse_internet) == 0){
             break;
         }
     
@@ -22,3 +25,4 @@ void saisir_forum(FORUM f){
     
 
 }
+

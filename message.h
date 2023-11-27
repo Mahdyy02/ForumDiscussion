@@ -1,10 +1,11 @@
 #ifndef MESSAGE_H_INCLUDED
 #define MESSAGE_H_INCLUDED
 #include "date.h"
+#include "forum.h"
 
 typedef struct{
     char* Titre;
-    char** Textes;
+    char** Textes;  
     Date Date_de_poste;
     unsigned int Numero_incription;
     unsigned int Numero_de_messages; // TO BE BACK HERE
@@ -13,5 +14,6 @@ typedef struct{
 
 void saisir_message(MESSAGES*);
 void affichage_message(MESSAGES);
+MESSAGES* charger_message();
 
 #endif

@@ -1,0 +1,3 @@
+C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build/CMakeFiles/Forum.dir
+C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build/CMakeFiles/edit_cache.dir
+C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\Forum.dir/objects.a
+C:\MinGW\bin\ar.exe qc CMakeFiles\Forum.dir/objects.a @CMakeFiles\Forum.dir\objects1.rsp
+C:\MinGW\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\Forum.dir/objects.a -Wl,--no-whole-archive -o Forum.exe -Wl,--out-implib,libForum.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Forum.dir\linkLibs.rsp
