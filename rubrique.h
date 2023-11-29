@@ -16,6 +16,6 @@ typedef struct{
 void affichage_rubrique(RUBRIQUE);
 void saisir_rubrique(RUBRIQUE*);
 void sauvegarder_message(MESSAGES m, RUBRIQUE r);
-void sauvegarder_rubrique(MESSAGES m , RUBRIQUE r);
+void sauvegarder_rubrique( RUBRIQUE r);
 
 #endif
