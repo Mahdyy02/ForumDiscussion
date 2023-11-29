@@ -55,7 +55,7 @@ void affichage_rubrique(RUBRIQUE r){
    
 }
 
-void sauvegarder_rubrique(MESSAGES m ,RUBRIQUE r){
+void sauvegarder_rubrique(RUBRIQUE r){
         const char *DossierRubrique = r.Theme;
 
     if (chdir("../Rubriques") != 0) {
@@ -93,7 +93,10 @@ void sauvegarder_rubrique(MESSAGES m ,RUBRIQUE r){
     fprintf(Fichier_rubrique,"Numero d'inscription: %i\n",r.Numero_inscription);
     fprintf(Fichier_rubrique,"Nombre de messages: %i\n",r.Nombre_message);
     fpintf(Fichier_rubrique,"Numero de sites: %i\n",r.Numero_de_sites);
-    fprintf(Fichier_rubrique,"listes internets: %s",(r.Liste_internet)[0]);
-
+    for(int i=0;i<Numero_de_poste;i++){
+        fprintf(Fichier_rubrique,"listes internet : %i: %s",i+1,r.liste_internet[i]);
+    }
+    fprintf(Fichier_rubrique, "========================================================\n");
     fclose(Fichier_rubrique);
+
 
