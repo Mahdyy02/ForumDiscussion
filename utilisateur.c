@@ -211,34 +211,34 @@ void charger_utilisateur(){
             switch (indice_attribut){
 
                 case 0:
-                    u.Nom = jeton;
+                    u.Nom = strdup(jeton);
                     break;
                 case 1:
-                    u.Prenom = jeton;
+                    u.Prenom = strdup(jeton);
                     break;
                 case 2:
-                    u.Adresse = jeton;
+                    u.Adresse = strdup(jeton);
                     break;
                 case 4:
                     u.Date_de_naissance = charger_date(jeton);
                     break;
                 case 3:
-                    u.Numero_telephone = (unsigned int)jeton;
+                    u.Numero_telephone = (unsigned int)atoi(jeton);
                     break;    
                 case 5:
-                    u.Numero_inscription = (unsigned int)jeton;
+                    u.Numero_inscription = (unsigned int)atoi(jeton);
                     break;
                 case 6:
-                    u.Adresse_email = jeton;
+                    u.Adresse_email = strdup(jeton);
                     break;
                 case 7:
-                    u.Password = jeton;
+                    u.Password = strdup(jeton);
                     break;
                 case 8:
-                    u.Pseudo = jeton;
+                    u.Pseudo = strdup(jeton);
                     break;
                 case 9:
-                    u.Administrateur = (int)jeton;
+                    u.Administrateur = (int)atoi(jeton);
                     break;   
 
             }
