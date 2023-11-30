@@ -167,7 +167,7 @@ MESSAGES* charger_message(char* rep_message){
             MESSAGES empty_message = {NULL, NULL};
             tableau_de_message[size_tableau_message] = empty_message;
             
-            MESSAGES m;
+            // MESSAGES m;
             m.Numero_de_messages = -1;
             indice_de_message = 0;
         }

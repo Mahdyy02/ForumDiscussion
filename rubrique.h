@@ -19,6 +19,7 @@ void saisir_rubrique(RUBRIQUE*);
 void sauvegarder_message(MESSAGES, RUBRIQUE);
 void charger_rubrique(RUBRIQUE*);
 void sauvegarder_rubrique(RUBRIQUE);
+void charger_rubriques();
 
 
 #endif

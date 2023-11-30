@@ -1,6 +1,5 @@
 #ifndef FORUM_H_INCLUDED
 #define FORUM_H_INCLUDED 
-#include "rubrique.h"
 #include "utilisateur.h"
 
 typedef struct {

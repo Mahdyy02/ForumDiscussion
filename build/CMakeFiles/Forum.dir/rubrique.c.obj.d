@@ -15,4 +15,5 @@ CMakeFiles/Forum.dir/rubrique.c.obj: \
  C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\forum.h \
  C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\utilisateur.h \
  c:\mingw\include\dirent.h c:\mingw\include\io.h \
- c:\mingw\include\sys\types.h c:\mingw\include\stdint.h
+ c:\mingw\include\sys\types.h c:\mingw\include\stdint.h \
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\global.h

@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "rubrique.h"
 #include <dirent.h>
+#include "global.h"
 
 #define MAX_STRING_LENGTH 100
 #define MAX_LINE_LENGTH 256
@@ -45,14 +46,68 @@ void saisir_rubrique(RUBRIQUE* r){
 }
 
 void affichage_rubrique(RUBRIQUE r){
-    printf("Le theme du rubrique est: %s\n",r.Theme);
-    printf("La date de poste du premier rubrique est: %i/%i/%i\n",r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
-    
-    for(unsigned int i=0; i < r.Numero_de_sites-1 ; i++){
-        printf("liste %i: %s\n",i+1,(r.Liste_internet)[i]);
 
+    printf("Le theme du rubrique est: %s\n",r.Theme);
+    printf("La date de poste du rubrique est: %i/%i/%i\n",r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
+    
+    for(unsigned int i=0; i < r.Numero_de_sites ; i++){
+        printf("liste %i: %s\n",i+1,(r.Liste_internet)[i]);
     }
    
+}
+
+void charger_rubriques() {
+
+
+    char *cheminDossier = "../Rubriques";
+
+    DIR *dossier = opendir(cheminDossier);
+    struct dirent *entree;
+
+    if (dossier == NULL) {
+        perror("Impossible d'ouvrir le répertoire");
+        exit(EXIT_FAILURE);
+    }
+
+    f.Nombres_Rubriques = 0;
+
+    while ((entree = readdir(dossier)) != NULL) {
+        if (entree->d_type == DT_DIR) { 
+
+            if (strcmp(entree->d_name, ".") != 0 && strcmp(entree->d_name, "..") != 0) {
+                char cheminSousDossier[MAX_STRING_LENGTH];
+
+                (f.Nombres_Rubriques)++;
+                Rubriques = (RUBRIQUE*)realloc(Rubriques, f.Nombres_Rubriques);
+                Rubriques[f.Nombres_Rubriques-1].Theme = strdup(entree->d_name);
+
+                sprintf(cheminSousDossier, "%s/%s", cheminDossier, entree->d_name);
+
+                DIR *sousDossier = opendir(cheminSousDossier);
+                int nombreFichiersTxt = 0;
+
+                if (sousDossier != NULL) {
+                    struct dirent *entreeSousDossier;
+                    while ((entreeSousDossier = readdir(sousDossier)) != NULL) {
+                        if (entreeSousDossier->d_type == DT_REG && strstr(entreeSousDossier->d_name, ".txt") != NULL) {
+                            nombreFichiersTxt++;
+                        }
+                    }
+                    closedir(sousDossier);
+
+                    Rubriques[f.Nombres_Rubriques-1].Messages = (MESSAGES**) malloc((nombreFichiersTxt-1)*sizeof(MESSAGES*));
+                    for(int i = 0; i < nombreFichiersTxt-1; i++){
+                        Rubriques[f.Nombres_Rubriques-1].Messages[i] = (MESSAGES*) malloc(1000*sizeof(MESSAGES));
+                    }
+
+                } else {
+                    perror("Impossible d'ouvrir le sous-répertoire");
+                }
+            }
+        }
+    }
+
+    closedir(dossier);
 }
 
 void charger_rubrique(RUBRIQUE* r) {
@@ -112,7 +167,7 @@ void charger_rubrique(RUBRIQUE* r) {
                             nom_de_chaine_a_lire[i] = line[i];
                         }
 
-                        for(int i = index_of_start + 2; i < strlen(line); i++){
+                        for(unsigned int i = index_of_start + 2; i < strlen(line); i++){
                             chaine_a_lire[size++] = line[i];
                         }
 
@@ -138,7 +193,6 @@ void charger_rubrique(RUBRIQUE* r) {
 
                 }else{ 
                     r->Messages[r->Numero_messages++] = charger_message(rep_fichier);
-
                 }    
             }
         }

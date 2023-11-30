@@ -85,6 +85,7 @@ CMakeFiles/Forum.dir/message.c.obj: C:/Users/ASUS\ TUF/Desktop/Study/Projects/Fo
 CMakeFiles/Forum.dir/rubrique.c.obj: C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/rubrique.c \
   C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/date.h \
   C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/forum.h \
+  C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/global.h \
   C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/message.h \
   C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/rubrique.h \
   C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/utilisateur.h \

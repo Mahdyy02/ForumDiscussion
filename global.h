@@ -7,8 +7,7 @@
 #include "forum.h"
 
 FORUM f;
-UTILISATEUR u;
-RUBRIQUE r;
+RUBRIQUE* Rubriques;
 
 
 #endif
