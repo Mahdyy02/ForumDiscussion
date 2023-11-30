@@ -62,25 +62,10 @@ Date charger_date(char* chaine_date){
 
     Date d;
 
-    char *jeton = strtok(chaine_date, "/");
-    int indice = 0;
+    int result = sscanf(chaine_date, "%d/%d/%d", &d.jour, &d.mois, &d.annee);
 
-    while (jeton != NULL) {
-        
-        switch (indice){
-        case 0:
-            d.jour = atoi(jeton);
-            break;
-        case 1:
-            d.mois = atoi(jeton);
-            break;
-        case 2:
-            d.annee = atoi(jeton);
-            break;
-        }
-
-        indice++;
-        jeton = strtok(NULL, ";");
+    if (result != 3){
+        printf("Échec de l'analyse de la chaîne de date.\n");
     }
 
     return d;

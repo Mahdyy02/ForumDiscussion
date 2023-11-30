@@ -28,13 +28,12 @@ int first_index(char* s, int size, char c){
     for(unsigned int i = 0; i < (unsigned int)size; i++){
         if(s[i] == c)
             return i;
-
-        if(i == (strlen(s) - 1) && s[i] != c)
-            return -1;       
     }
+
+    return -1;       
 }
 
-void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
+void inscription(UTILISATEUR* u){
 
 
     printf("********************************************************\n");
@@ -51,7 +50,7 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
 
         int valid_string = 1;
         for(unsigned int i = 0; i < strlen(u->Nom) - 1;i++){
-            if(!isupper(u->Nom[i]) && !islower(u->Nom[i]) || isdigit(u->Nom[i])){
+            if(!isupper(u->Nom[i]) && (!islower(u->Nom[i]) || isdigit(u->Nom[i]))){
                 valid_string = 0;
                 break;
             }
@@ -70,7 +69,7 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
 
         int valid_string = 1;
         for(unsigned int i = 0; i < strlen(u->Prenom) - 1;i++){
-            if(!isupper(u->Prenom[i]) && !islower(u->Prenom[i]) || isdigit(u->Prenom[i])){
+            if(!isupper(u->Prenom[i]) && (!islower(u->Prenom[i]) || isdigit(u->Prenom[i]))){
                 valid_string = 0;
                 break;
             }
@@ -147,6 +146,9 @@ void inscription(UTILISATEUR* u){ // NEED TO BE BACK HERE LATER
     fgets(u->Pseudo, MAX_STRING_LENGTH, stdin);
     (u->Pseudo)[strlen(u->Pseudo) - 1] = '\0'; 
 
+    u->Numero_inscription = ++(f.Nombre_utilisateurs);
+    sauvegarder_utilisateur(*u);
+
     printf("Félicitations vous êtes inscrits avec succés.\n");
 
 }
@@ -166,7 +168,7 @@ void affichage(UTILISATEUR u){
     printf("l'adresse est: %s\n",u.Adresse);
     printf("la date de naissance est: %i/%i/%i\n",u.Date_de_naissance.jour,u.Date_de_naissance.mois,u.Date_de_naissance.annee);
     printf("le numéro de téléphone est: %u\n",u.Numero_telephone);
-    printf("l'adresse e_amil est: %s\n",u.Adresse_email);
+    printf("l'adresse e-mail est: %s\n",u.Adresse_email);
 }
 
 
@@ -180,7 +182,7 @@ void sauvegarder_utilisateur(UTILISATEUR u){
     }
 
     u.Administrateur = 0;
-    u.Numero_inscription = f.Nombre_utilisateurs;
+    u.Numero_inscription = f.Nombre_utilisateurs - 1;
 
     fprintf(Fichier_utilisateurs ,"%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i\n", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_telephone, u.Numero_inscription, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur);
 
@@ -198,12 +200,17 @@ void charger_utilisateur(){
         exit(1);
     }
 
+    f.Nombre_utilisateurs = 0;
 
     while (fgets(line, sizeof(line), Fichier_utilisateurs) != NULL) {
 
         UTILISATEUR u;
+
+        f.Nombre_utilisateurs++;
+
+        f.Utilisateurs = (UTILISATEUR*) realloc(f.Utilisateurs, (f.Nombre_utilisateurs)*sizeof(UTILISATEUR));
             
-        int indice_attribut = 0; // pour connaitre les differents attributs
+        int indice_attribut = 0;
         char *jeton = strtok(line, ";");
 
         while (jeton != NULL) {
@@ -219,12 +226,12 @@ void charger_utilisateur(){
                 case 2:
                     u.Adresse = strdup(jeton);
                     break;
-                case 4:
-                    u.Date_de_naissance = charger_date(jeton);
-                    break;
                 case 3:
+                    u.Date_de_naissance = charger_date(jeton);
+                    break;     
+                case 4:
                     u.Numero_telephone = (unsigned int)atoi(jeton);
-                    break;    
+                    break;   
                 case 5:
                     u.Numero_inscription = (unsigned int)atoi(jeton);
                     break;
@@ -247,7 +254,19 @@ void charger_utilisateur(){
             jeton = strtok(NULL, ";");
         }
 
-        (f.Utilisateurs)[u.Numero_inscription] = u; 
+        (f.Utilisateurs)[u.Numero_inscription].Nom = strdup(u.Nom);
+        (f.Utilisateurs)[u.Numero_inscription].Prenom = strdup(u.Prenom);
+        (f.Utilisateurs)[u.Numero_inscription].Adresse = strdup(u.Adresse);
+        (f.Utilisateurs)[u.Numero_inscription].Date_de_naissance.jour = u.Date_de_naissance.jour;
+        (f.Utilisateurs)[u.Numero_inscription].Date_de_naissance.mois = u.Date_de_naissance.mois;
+        (f.Utilisateurs)[u.Numero_inscription].Date_de_naissance.annee = u.Date_de_naissance.annee;
+        (f.Utilisateurs)[u.Numero_inscription].Numero_telephone = u.Numero_telephone;
+        (f.Utilisateurs)[u.Numero_inscription].Numero_inscription = u.Numero_inscription;
+        (f.Utilisateurs)[u.Numero_inscription].Adresse_email = strdup(u.Adresse_email);
+        (f.Utilisateurs)[u.Numero_inscription].Password = strdup(u.Password);
+        (f.Utilisateurs)[u.Numero_inscription].Pseudo = strdup(u.Pseudo);
+        (f.Utilisateurs)[u.Numero_inscription].Administrateur = u.Administrateur;
+
 
     }
     

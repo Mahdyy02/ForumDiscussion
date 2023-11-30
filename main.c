@@ -56,28 +56,11 @@ void Menu(){
 
 int main(){
 
-    r.Messages = (MESSAGES**) malloc(sizeof(MESSAGES*) * 1000);
-    for(int i = 0; i < 100; i++){
-        r.Messages[i] = (MESSAGES*) malloc(sizeof(MESSAGES) * 1000);
+    charger_utilisateur(); 
+
+    for(unsigned int i = 0; i < f.Nombre_utilisateurs; i++){
+        affichage(f.Utilisateurs[i]);
     }
-
-    r.Theme = strdup("Peinture");
-
-    charger_rubrique(&r);
-
-    for(int i = 0;  i < r.Numero_messages; i++){
-        for (int j = 0; r.Messages[i][j].Titre != NULL ; j++){
-            affichage_message(r.Messages[i][j]);
-            printf("=============================================\n");
-        }
-        
-    }
-
-    for(int i = 0;  i < 1000; i++){
-            free(r.Messages[i]);
-    }
-    free(r.Messages);
-        
 
     // int c;
     // char pseudo_invite[100];
