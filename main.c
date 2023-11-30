@@ -4,6 +4,7 @@
 #include "utilisateur.h"
 #include "forum.h"
 #include "global.h"
+#include <string.h>
 
 void Menu(){
 
@@ -55,12 +56,28 @@ void Menu(){
 
 int main(){
 
-    MESSAGES m;
+    r.Messages = (MESSAGES**) malloc(sizeof(MESSAGES*) * 1000);
+    for(int i = 0; i < 100; i++){
+        r.Messages[i] = (MESSAGES*) malloc(sizeof(MESSAGES) * 1000);
+    }
 
-    saisir_rubrique(&r);
-    saisir_message(&m);
+    r.Theme = strdup("Peinture");
 
-    sauvegarder_message(m,r);
+    charger_rubrique(&r);
+
+    for(int i = 0;  i < r.Numero_messages; i++){
+        for (int j = 0; r.Messages[i][j].Titre != NULL ; j++){
+            affichage_message(r.Messages[i][j]);
+            printf("=============================================\n");
+        }
+        
+    }
+
+    for(int i = 0;  i < 1000; i++){
+            free(r.Messages[i]);
+    }
+    free(r.Messages);
+        
 
     // int c;
     // char pseudo_invite[100];

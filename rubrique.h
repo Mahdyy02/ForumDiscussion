@@ -5,9 +5,10 @@
 
 typedef struct{
     char* Theme;
+    unsigned int Numero_messages;
+    MESSAGES** Messages;
     Date Date_de_poste;
     unsigned int Numero_inscription;
-    unsigned int Nombre_messages;
     char** Liste_internet;
     unsigned int Numero_de_sites;
 
@@ -15,7 +16,9 @@ typedef struct{
 
 void affichage_rubrique(RUBRIQUE);
 void saisir_rubrique(RUBRIQUE*);
-void sauvegarder_message(MESSAGES m, RUBRIQUE r);
-void sauvegarder_rubrique( RUBRIQUE r);
+void sauvegarder_message(MESSAGES, RUBRIQUE);
+void charger_rubrique(RUBRIQUE*);
+void sauvegarder_rubrique(RUBRIQUE);
+
 
 #endif

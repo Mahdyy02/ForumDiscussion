@@ -87,12 +87,16 @@ CMakeFiles/Forum.dir/rubrique.c.obj: C:/Users/ASUS\ TUF/Desktop/Study/Projects/F
   C:/Users/ASUS\ TUF/Desktop/Study/Projects/ForumDiscussion/utilisateur.h \
   C:/MinGW/include/_mingw.h \
   C:/MinGW/include/ctype.h \
+  C:/MinGW/include/dirent.h \
+  C:/MinGW/include/io.h \
   C:/MinGW/include/msvcrtver.h \
   C:/MinGW/include/sdkddkver.h \
+  C:/MinGW/include/stdint.h \
   C:/MinGW/include/stdio.h \
   C:/MinGW/include/stdlib.h \
   C:/MinGW/include/string.h \
   C:/MinGW/include/strings.h \
+  C:/MinGW/include/sys/types.h \
   C:/MinGW/include/sys/types.h \
   C:/MinGW/include/w32api.h \
   C:/MinGW/include/wchar.h \
@@ -148,6 +152,8 @@ C:/MinGW/include/stdlib.h:
 C:/MinGW/include/strings.h:
 
 C:/MinGW/include/sys/types.h:
+
+C:/MinGW/include/dirent.h:
 
 C:/MinGW/include/w32api.h:
 

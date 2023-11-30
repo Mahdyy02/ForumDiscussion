@@ -14,6 +14,6 @@ typedef struct{
 
 void saisir_message(MESSAGES*);
 void affichage_message(MESSAGES);
-MESSAGES* charger_message();
+MESSAGES* charger_message(char*);
 
 #endif

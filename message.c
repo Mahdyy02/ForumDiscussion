@@ -33,7 +33,7 @@ void saisir_message(MESSAGES* m){
 
 void affichage_message(MESSAGES m){
 
-    for(int i = 0; i < m.Numero_de_messages; i++){
+    for(unsigned int i = 0; i < m.Numero_de_messages; i++){
 
         if(i == 0){
             printf("Le titre de message est: %s\n", m.Titre);
@@ -82,23 +82,28 @@ void sauvegarder_message(MESSAGES m, RUBRIQUE r){
     }
 
     fprintf(Fichier_messages, "Numero d'inscription: %i\n", m.Numero_incription);
-    fprintf(Fichier_messages, "Titre: %s", m.Titre);
+    fprintf(Fichier_messages, "Titre: %s\n", m.Titre);
     fprintf(Fichier_messages, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
     fprintf(Fichier_messages, "Nombre de messages: %i\n", m.Numero_de_messages);
     fprintf(Fichier_messages, "Messages: %s", (m.Textes)[0]);
 
-    for(int i = 1; i < m.Numero_de_messages; i++){
+    for(unsigned int i = 1; i < m.Numero_de_messages; i++){
         fprintf(Fichier_messages, "Reply %i: %s", i, (m.Textes)[i]);
     }
 
     fprintf(Fichier_messages, "========================================================\n");
 
+    if (chdir("..") != 0) {
+        perror("Erreur du retour vers le dossier principale.\n");
+        return;
+    }
+
     fclose(Fichier_messages);
 }
 
-MESSAGES* charger_message(){
+MESSAGES* charger_message(char* rep_message){
 
-    FILE *Fichier_messages = fopen("messages.txt", "r");
+    FILE *Fichier_messages = fopen(rep_message, "r");
 
     if (Fichier_messages == NULL) {
         perror("Erreur de l'ouverture du fichier message.\n");
@@ -132,7 +137,7 @@ MESSAGES* charger_message(){
             nom_de_chaine_a_lire[i] = line[i];
         }
 
-        for(int i = index_of_start + 2; i < strlen(line); i++){
+        for(unsigned int i = index_of_start + 2; i < strlen(line); i++){
             chaine_a_lire[size++] = line[i];
         }
 
@@ -154,7 +159,7 @@ MESSAGES* charger_message(){
 
         // printf("DEBUG 1: %i %i\n", indice_de_message, m.Numero_de_messages);
 
-        if(m.Numero_de_messages != -1 && indice_de_message == m.Numero_de_messages){
+        if(m.Numero_de_messages != -1 && (unsigned int)indice_de_message == m.Numero_de_messages){
 
             if(size_tableau_message < 1000)   
                 tableau_de_message[size_tableau_message++] = m;
