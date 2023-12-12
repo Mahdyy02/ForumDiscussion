@@ -13,7 +13,7 @@
 
 void saisir_message(MESSAGE* m){
 
-    // m->Numero_incription = utilisateur_actuel
+    m->Numero_incription = u.Numero_inscription;
 
     printf("Le titre de message est: ");
     m->Titre = (char*)malloc(MAX_STRING_LENGTH*sizeof(char));

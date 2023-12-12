@@ -3,5 +3,6 @@
 #include "forum.h"
 
 FORUM f;
+UTILISATEUR u;
 
 #endif

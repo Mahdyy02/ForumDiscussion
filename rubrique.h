@@ -37,5 +37,8 @@ void retirer_liste_de_message(Liste_de_liste_de_message *);
 void detruire_liste_de_liste_de_message(Liste_de_liste_de_message *);
 void charger_rubriques(Liste_rubrique*);
 void initialiser_liste_rubriques(Liste_rubrique*);
+void repondre_messsage(MESSAGE, RUBRIQUE);
+unsigned int nombre_rubriques();
+void detruire_liste_rubrique(Liste_rubrique*);
 
 #endif

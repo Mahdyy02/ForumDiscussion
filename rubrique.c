@@ -11,8 +11,10 @@
 #define MAX_LINE_LENGTH 256
 
 void saisir_rubrique(RUBRIQUE* r){
+
+    r->Numero_inscription = u.Numero_inscription;
     
-        while(1){
+    while(1){
         printf("Theme de la rubrique: ");
         r->Theme = malloc(MAX_STRING_LENGTH*sizeof(char));
         fgets(r->Theme, MAX_STRING_LENGTH, stdin);
@@ -261,12 +263,14 @@ void retirer_rubrique(Liste_rubrique* LR){
     }
 
     if(LR->tete->Suivant == NULL){
+        detruire_liste_de_liste_de_message(&LR->tete->valeur.Listes_messages);
         free(LR->tete);
         LR->tete = NULL;
     }
 
     Noeud_rubrique *iter = LR->tete;
     while(iter->Suivant->Suivant != NULL) iter = iter->Suivant;
+    detruire_liste_de_liste_de_message(&iter->Suivant->valeur.Listes_messages);
     free(iter->Suivant);
     iter->Suivant = NULL;
 }
@@ -299,4 +303,17 @@ void charger_rubriques(Liste_rubrique *LR) {
         }
     }
     closedir(dossier);
+}
+
+unsigned int nombre_rubriques(){
+    
+    unsigned int nr = 0;
+    Noeud_rubrique *iter = f.Rubriques.tete;
+    while(iter != NULL){
+        nr++;
+        iter = iter->Suivant;
+    }
+
+    return nr;
+
 }

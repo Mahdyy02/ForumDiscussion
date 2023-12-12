@@ -27,6 +27,5 @@ void initialiser_liste_de_messages(Liste_message*);
 void ajouter_liste_message(Liste_message*, MESSAGE);
 void retirer_message(Liste_message*);
 void detruire_liste_de_message(Liste_message*);
-void repondre_messsage(MESSAGE, RUBRIQUE);
 
 #endif
