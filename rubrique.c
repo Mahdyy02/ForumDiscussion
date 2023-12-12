@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include "global.h"
 #include "linked_lists.h"
+#include "date.h"
 
 #define MAX_STRING_LENGTH 100
 #define MAX_LINE_LENGTH 256
@@ -13,6 +14,7 @@
 void saisir_rubrique(RUBRIQUE* r){
 
     r->Numero_inscription = u.Numero_inscription;
+    r->Date_de_poste = date_actuelle();
     
     while(1){
         printf("Theme de la rubrique: ");

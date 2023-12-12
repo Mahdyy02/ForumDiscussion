@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "date.h"
+#include <time.h>
 
 void Saisir_date(Date *d){
 
@@ -69,4 +70,21 @@ Date charger_date(char* chaine_date){
     }
 
     return d;
+}
+
+Date date_actuelle(){
+    
+    Date d;
+
+    time_t currentTime;
+    time(&currentTime);
+
+    struct tm *localTime = localtime(&currentTime);
+
+    d.mois = localTime->tm_mon + 1;
+    d.jour = localTime->tm_mday;
+    d.annee = localTime->tm_year + 1900;
+
+    return d;
+
 }
