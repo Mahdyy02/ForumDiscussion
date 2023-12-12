@@ -5,6 +5,7 @@
 #include "rubrique.h"
 #include <dirent.h>
 #include "global.h"
+#include "linked_lists.h"
 
 #define MAX_STRING_LENGTH 100
 #define MAX_LINE_LENGTH 256
@@ -30,18 +31,19 @@ void saisir_rubrique(RUBRIQUE* r){
         printf("ERREUR: Le Theme de la rubrique ne doit contenir que des caracteres\n");    
     }
 
-    r->Numero_de_sites = 0;
-    r->Liste_internet = (char**) malloc(MAX_STRING_LENGTH * sizeof(char*));
-    do{
-        printf("Le nom du site(vide pour quitter): ");
-        unsigned int i = r->Numero_de_sites;
-        (r->Liste_internet)[i] = (char*) malloc(MAX_STRING_LENGTH * sizeof(char));
-        fgets((r->Liste_internet)[i], MAX_STRING_LENGTH, stdin);
-        // (m->Textes)[i][strlen((m->Textes)[i])-1] = '\0';
-        (r->Numero_de_sites)++;
+    initialiser_liste(&r->Sites_internet);
 
-    } while(strcmp((r->Liste_internet)[(r->Numero_de_sites) - 1], "\n") != 0);
-    (r->Numero_de_sites)--;
+    char site_internet[MAX_LINE_LENGTH];
+    do{
+        printf("Donnez le site(vide pour quitter): ");
+        fgets(site_internet, MAX_STRING_LENGTH, stdin);
+        if(strcmp(site_internet, "\n") != 0){
+            site_internet[strlen(site_internet)-1] = '\0';
+            ajouter_element(&r->Sites_internet, site_internet);
+        }    
+    }while(strcmp(site_internet, "\n") != 0);
+
+    sauvegarder_rubrique(*r);
 
 }
 
@@ -50,74 +52,51 @@ void affichage_rubrique(RUBRIQUE r){
     printf("Le theme du rubrique est: %s\n",r.Theme);
     printf("La date de poste du rubrique est: %i/%i/%i\n",r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
     
-    for(unsigned int i=0; i < r.Numero_de_sites ; i++){
-        printf("liste %i: %s\n",i+1,(r.Liste_internet)[i]);
+    Noeud *iter = r.Sites_internet.tete;
+    for(int i = 0; iter != NULL; i++){
+        printf("Site %i: %s\n", i+1, iter->Valeur);
+        iter = iter->Suivant;
     }
-   
+
+    // Noeud_liste_de_message *iter_liste = r.Listes_messages.tete;
+    // while(iter_liste != NULL){
+    //     Noeud_message *iter = iter_liste->Valeur.tete;
+    //     while(iter != NULL){
+    //         affichage_message(iter->Valeur);
+    //         iter = iter->Suivant;
+    //     }
+
+    //     iter_liste = iter_liste->Suivant;
+    // }
+
 }
 
-void charger_rubriques() {
+void initialiser_liste_de_liste_de_message(Liste_de_liste_de_message* LLM){
+    LLM->tete = NULL;
+}
 
+void ajouter_liste_de_message(Liste_de_liste_de_message* LLM, Liste_message LM){
 
-    char *cheminDossier = "../Rubriques";
+    Noeud_liste_de_message *Nouvelle_liste_de_message = (Noeud_liste_de_message*)malloc(sizeof(Noeud_liste_de_message));
+    Nouvelle_liste_de_message->Valeur = LM;
+    Nouvelle_liste_de_message->Suivant = NULL;
 
-    DIR *dossier = opendir(cheminDossier);
-    struct dirent *entree;
-
-    if (dossier == NULL) {
-        perror("Impossible d'ouvrir le répertoire");
-        exit(EXIT_FAILURE);
+    if(LLM->tete == NULL){
+        LLM->tete = Nouvelle_liste_de_message;
+        return;
     }
 
-    f.Nombres_Rubriques = 0;
-
-    while ((entree = readdir(dossier)) != NULL) {
-        if (entree->d_type == DT_DIR) { 
-
-            if (strcmp(entree->d_name, ".") != 0 && strcmp(entree->d_name, "..") != 0) {
-                char cheminSousDossier[MAX_STRING_LENGTH];
-
-                (f.Nombres_Rubriques)++;
-                Rubriques = (RUBRIQUE*)realloc(Rubriques, f.Nombres_Rubriques);
-                Rubriques[f.Nombres_Rubriques-1].Theme = strdup(entree->d_name);
-
-                sprintf(cheminSousDossier, "%s/%s", cheminDossier, entree->d_name);
-
-                DIR *sousDossier = opendir(cheminSousDossier);
-                int nombreFichiersTxt = 0;
-
-                if (sousDossier != NULL) {
-                    struct dirent *entreeSousDossier;
-                    while ((entreeSousDossier = readdir(sousDossier)) != NULL) {
-                        if (entreeSousDossier->d_type == DT_REG && strstr(entreeSousDossier->d_name, ".txt") != NULL) {
-                            nombreFichiersTxt++;
-                        }
-                    }
-                    closedir(sousDossier);
-
-                    Rubriques[f.Nombres_Rubriques-1].Messages = (MESSAGES**) malloc((nombreFichiersTxt-1)*sizeof(MESSAGES*));
-                    for(int i = 0; i < nombreFichiersTxt-1; i++){
-                        Rubriques[f.Nombres_Rubriques-1].Messages[i] = (MESSAGES*) malloc(1000*sizeof(MESSAGES));
-                    }
-
-                } else {
-                    perror("Impossible d'ouvrir le sous-répertoire");
-                }
-            }
-        }
-    }
-
-    closedir(dossier);
+    Noeud_liste_de_message *iter = LLM->tete;
+    while(iter->Suivant != NULL) iter = iter->Suivant;
+    iter->Suivant = Nouvelle_liste_de_message;
 }
 
 void charger_rubrique(RUBRIQUE* r) {
 
-    r->Numero_messages = 0;
-
     char *rep_dossier;
     rep_dossier = strdup(r->Theme);
 
-    rep_dossier = (char* )realloc(rep_dossier, (strlen(rep_dossier)+strlen("../Rubriques/"))*sizeof(char));
+    rep_dossier = (char*)realloc(rep_dossier, (strlen(rep_dossier)+strlen("../Rubriques/"))*sizeof(char));
 
     snprintf(rep_dossier, MAX_LINE_LENGTH, "../Rubriques/%s", r->Theme);
 
@@ -130,20 +109,20 @@ void charger_rubrique(RUBRIQUE* r) {
     }
 
     struct dirent *entry;
-    while ((entry = readdir(dir)) != NULL) {
+    while ((entry = readdir(dir)) != NULL){
         
-        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0){
             char rep_fichier[MAX_LINE_LENGTH];
             snprintf(rep_fichier, sizeof(rep_fichier), "%s/%s", rep_dossier, entry->d_name);
 
-            if (entry->d_type == DT_REG) {
+            if (entry->d_type == DT_REG){
                 if(strchr(rep_fichier, '_') == NULL){
 
                     FILE *Fichier_rubrique = fopen(rep_fichier, "r");
 
                     if (Fichier_rubrique == NULL) {
                         printf("Erreur de l'ouverture du fichier %s.\n", rep_fichier);
-                        exit(1);
+                        exit(EXIT_FAILURE);
                     }
 
                     char nom_de_chaine_a_lire[MAX_LINE_LENGTH];
@@ -151,14 +130,11 @@ void charger_rubrique(RUBRIQUE* r) {
                     char line[MAX_LINE_LENGTH];
                     int index_of_start;
                     int size;
-                    int indice_de_liste = 0;
+
+                    initialiser_liste_de_liste_de_message(&r->Listes_messages);
+                    initialiser_liste(&r->Sites_internet);
 
                     while (fgets(line, sizeof(line), Fichier_rubrique) != NULL) {
-
-
-                        if(line[1] == '=' || line[0] == '\0'){
-                            continue;    
-                        }
 
                         size = 0;
                         index_of_start = first_index(line, strlen(line), ':');    
@@ -174,25 +150,20 @@ void charger_rubrique(RUBRIQUE* r) {
                         nom_de_chaine_a_lire[index_of_start] = '\0';
                         chaine_a_lire[size-1] = '\0';
 
-
                         if(strcmp(nom_de_chaine_a_lire, "Numero d'inscription") == 0){
                             r->Numero_inscription = atoi(chaine_a_lire);
                         }else if(strcmp(nom_de_chaine_a_lire, "Theme") == 0){
                             r->Theme = strdup(chaine_a_lire);
                         }else if(strcmp(nom_de_chaine_a_lire ,"Date de poste") == 0){
                             r->Date_de_poste = charger_date(chaine_a_lire);
-                        }else if(strcmp(nom_de_chaine_a_lire, "Numero de sites") == 0){
-                            r->Numero_de_sites = atoi(chaine_a_lire);
-                            r->Liste_internet = (char**) malloc((r->Numero_de_sites)*sizeof(char*));
                         }else{
-                            r->Liste_internet[indice_de_liste++] = strdup(chaine_a_lire);
+                            ajouter_element(&r->Sites_internet, chaine_a_lire);
                         }
-
                     }
                     fclose(Fichier_rubrique);
 
                 }else{ 
-                    r->Messages[r->Numero_messages++] = charger_message(rep_fichier);
+                    ajouter_liste_de_message(&r->Listes_messages, charger_message(rep_fichier));                    
                 }    
             }
         }
@@ -235,9 +206,18 @@ void sauvegarder_rubrique(RUBRIQUE r){
     fprintf(Fichier_rubrique,"Theme: %s\n", r.Theme);
     fprintf(Fichier_rubrique,"Date de poste: %i/%i/%i\n", r.Date_de_poste.jour, r.Date_de_poste.mois, r.Date_de_poste.annee);
     fprintf(Fichier_rubrique,"Numero d'inscription: %i\n", r.Numero_inscription);
-    fprintf(Fichier_rubrique,"Numero de sites: %i\n", r.Numero_de_sites);
-    for(unsigned int i=0; i< r.Numero_de_sites; i++){
-        fprintf(Fichier_rubrique,"Listes internet %i: %s", i+1, r.Liste_internet[i]);
+
+    if(r.Sites_internet.tete == NULL){
+        printf("Erreur: le message n'admet pas de texte.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(r.Sites_internet.tete != NULL){
+        Noeud* iter = r.Sites_internet.tete;
+        for(unsigned int i = 1; iter != NULL; i++){
+            fprintf(Fichier_rubrique, "Site %i: %s\n", i, iter->Valeur);
+            iter = iter->Suivant;
+        }
     }
 
 
@@ -247,4 +227,76 @@ void sauvegarder_rubrique(RUBRIQUE r){
     }
 
     fclose(Fichier_rubrique);
+
+    charger_rubriques(&f.Rubriques);
+
+}
+
+void initialiser_liste_rubriques(Liste_rubrique *LR){
+    LR->tete = NULL;
+}
+
+void ajouter_rubrique(Liste_rubrique *LR, RUBRIQUE r){
+
+    Noeud_rubrique *nouvelle_rubrique = (Noeud_rubrique*)malloc(sizeof(Noeud_rubrique));
+    nouvelle_rubrique->valeur = r;
+    nouvelle_rubrique->Suivant = NULL;
+
+    if(LR->tete == NULL){
+        LR->tete = nouvelle_rubrique;
+        return;
+    }
+
+    Noeud_rubrique *iter = LR->tete;
+    while(iter->Suivant != NULL) iter = iter->Suivant;
+    iter->Suivant = nouvelle_rubrique;
+
+}
+
+void retirer_rubrique(Liste_rubrique* LR){
+
+    if(LR->tete == NULL){
+        printf("Erreur: On ne peux pas retirer un element d'une liste vide.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if(LR->tete->Suivant == NULL){
+        free(LR->tete);
+        LR->tete = NULL;
+    }
+
+    Noeud_rubrique *iter = LR->tete;
+    while(iter->Suivant->Suivant != NULL) iter = iter->Suivant;
+    free(iter->Suivant);
+    iter->Suivant = NULL;
+}
+
+void detruire_liste_rubrique(Liste_rubrique* LR){
+    while(LR->tete != NULL) retirer_rubrique(LR);
+}
+
+void charger_rubriques(Liste_rubrique *LR) {
+
+    char *cheminDossier = "../Rubriques";
+    DIR *dossier = opendir(cheminDossier);
+
+    if (dossier == NULL) {
+        perror("Impossible d'ouvrir le répertoire");
+        exit(EXIT_FAILURE);
+    }
+
+    initialiser_liste_rubriques(LR);
+
+    while (1){
+        struct dirent *entree = readdir(dossier);
+        if (!entree) break;
+
+        if (entree->d_type == DT_DIR && strcmp(entree->d_name, ".") != 0 && strcmp(entree->d_name, "..") != 0){
+            RUBRIQUE r;
+            r.Theme = strdup(entree->d_name);
+            charger_rubrique(&r);    
+            ajouter_rubrique(LR, r);
+        }
+    }
+    closedir(dossier);
 }

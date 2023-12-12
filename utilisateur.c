@@ -137,7 +137,7 @@ void inscription(UTILISATEUR* u){
         if(strlen(u->Password) > 8 && upper >= 1 && symbol >= 2)
             break;
 
-        printf("Le mot de passe doit être de longueur supèrieur à 8, contenir un chiffre majuscule et deux symbole.\n");    
+        printf("Le mot de passe doit être de longueur supèrieur à 8, contenir un chiffre majuscule et deux symboles.\n");    
 
     }
 
@@ -187,9 +187,26 @@ void sauvegarder_utilisateur(UTILISATEUR u){
     fprintf(Fichier_utilisateurs ,"%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i\n", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_telephone, u.Numero_inscription, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur);
 
     fclose(Fichier_utilisateurs);
+
+    charger_utilisateur();
+    
 }
 
 void charger_utilisateur(){
+
+
+    // /////////////////////////////////////////////////////////////////////////////////
+                
+    // char cwd[1024];
+
+    // if (getcwd(cwd, sizeof(cwd)) != NULL) {
+    //     printf("Current working directory: %s\n", cwd);
+    // } else {
+    //     perror("getcwd() error");
+    //     return 1;
+    // }
+
+    // /////////////////////////////////////////////////////////////////////////////////
 
     FILE *Fichier_utilisateurs = fopen("utilisateurs.txt", "r");
 
@@ -254,21 +271,21 @@ void charger_utilisateur(){
             jeton = strtok(NULL, ";");
         }
 
-        (f.Utilisateurs)[u.Numero_inscription].Nom = strdup(u.Nom);
-        (f.Utilisateurs)[u.Numero_inscription].Prenom = strdup(u.Prenom);
-        (f.Utilisateurs)[u.Numero_inscription].Adresse = strdup(u.Adresse);
-        (f.Utilisateurs)[u.Numero_inscription].Date_de_naissance.jour = u.Date_de_naissance.jour;
-        (f.Utilisateurs)[u.Numero_inscription].Date_de_naissance.mois = u.Date_de_naissance.mois;
-        (f.Utilisateurs)[u.Numero_inscription].Date_de_naissance.annee = u.Date_de_naissance.annee;
-        (f.Utilisateurs)[u.Numero_inscription].Numero_telephone = u.Numero_telephone;
-        (f.Utilisateurs)[u.Numero_inscription].Numero_inscription = u.Numero_inscription;
-        (f.Utilisateurs)[u.Numero_inscription].Adresse_email = strdup(u.Adresse_email);
-        (f.Utilisateurs)[u.Numero_inscription].Password = strdup(u.Password);
-        (f.Utilisateurs)[u.Numero_inscription].Pseudo = strdup(u.Pseudo);
-        (f.Utilisateurs)[u.Numero_inscription].Administrateur = u.Administrateur;
-
+        memcpy(&f.Utilisateurs[u.Numero_inscription], &u, sizeof(UTILISATEUR));
 
     }
     
     fclose(Fichier_utilisateurs);
+}
+
+void free_utilisateurs(){
+    for (unsigned int i = 0; i < f.Nombre_utilisateurs; ++i) {
+        free(f.Utilisateurs[i].Nom);
+        free(f.Utilisateurs[i].Prenom);
+        free(f.Utilisateurs[i].Adresse);
+        free(f.Utilisateurs[i].Adresse_email);
+        free(f.Utilisateurs[i].Password);
+        free(f.Utilisateurs[i].Pseudo);
+    }
+    free(f.Utilisateurs);
 }

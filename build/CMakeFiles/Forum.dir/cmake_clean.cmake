@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Forum.dir/date.c.obj.d"
   "CMakeFiles/Forum.dir/forum.c.obj"
   "CMakeFiles/Forum.dir/forum.c.obj.d"
+  "CMakeFiles/Forum.dir/linked_lists.c.obj"
+  "CMakeFiles/Forum.dir/linked_lists.c.obj.d"
   "CMakeFiles/Forum.dir/main.c.obj"
   "CMakeFiles/Forum.dir/main.c.obj.d"
   "CMakeFiles/Forum.dir/message.c.obj"

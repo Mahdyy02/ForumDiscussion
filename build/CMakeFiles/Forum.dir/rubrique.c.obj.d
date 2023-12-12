@@ -10,10 +10,11 @@ CMakeFiles/Forum.dir/rubrique.c.obj: \
  c:\mingw\include\wchar.h c:\mingw\include\ctype.h \
  c:\mingw\include\wctype.h \
  C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\rubrique.h \
- C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\date.h \
  C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\message.h \
- C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\forum.h \
- C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\utilisateur.h \
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\date.h \
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\linked_lists.h \
  c:\mingw\include\dirent.h c:\mingw\include\io.h \
  c:\mingw\include\sys\types.h c:\mingw\include\stdint.h \
- C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\global.h
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\global.h \
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\forum.h \
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\utilisateur.h

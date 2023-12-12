@@ -80,12 +80,12 @@ clean: CMakeFiles/Forum.dir/clean
 CMakeFiles/Forum.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Forum.dir\build.make CMakeFiles/Forum.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Forum.dir\build.make CMakeFiles/Forum.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\ASUS TUF\Desktop\Study\Projects\ForumDiscussion\build\CMakeFiles" --progress-num=1,2,3,4,5,6,7 "Built target Forum"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\ASUS TUF\Desktop\Study\Projects\ForumDiscussion\build\CMakeFiles" --progress-num=1,2,3,4,5,6,7,8 "Built target Forum"
 .PHONY : CMakeFiles/Forum.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Forum.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\ASUS TUF\Desktop\Study\Projects\ForumDiscussion\build\CMakeFiles" 7
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\ASUS TUF\Desktop\Study\Projects\ForumDiscussion\build\CMakeFiles" 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Forum.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\ASUS TUF\Desktop\Study\Projects\ForumDiscussion\build\CMakeFiles" 0
 .PHONY : CMakeFiles/Forum.dir/rule

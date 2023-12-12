@@ -176,6 +176,30 @@ forum.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Forum.dir\build.make CMakeFiles/Forum.dir/forum.c.s
 .PHONY : forum.c.s
 
+linked_lists.obj: linked_lists.c.obj
+.PHONY : linked_lists.obj
+
+# target to build an object file
+linked_lists.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Forum.dir\build.make CMakeFiles/Forum.dir/linked_lists.c.obj
+.PHONY : linked_lists.c.obj
+
+linked_lists.i: linked_lists.c.i
+.PHONY : linked_lists.i
+
+# target to preprocess a source file
+linked_lists.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Forum.dir\build.make CMakeFiles/Forum.dir/linked_lists.c.i
+.PHONY : linked_lists.c.i
+
+linked_lists.s: linked_lists.c.s
+.PHONY : linked_lists.s
+
+# target to generate assembly for a file
+linked_lists.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Forum.dir\build.make CMakeFiles/Forum.dir/linked_lists.c.s
+.PHONY : linked_lists.c.s
+
 main.obj: main.c.obj
 .PHONY : main.obj
 
@@ -287,6 +311,9 @@ help:
 	@echo ... forum.obj
 	@echo ... forum.i
 	@echo ... forum.s
+	@echo ... linked_lists.obj
+	@echo ... linked_lists.i
+	@echo ... linked_lists.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

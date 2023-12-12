@@ -34,5 +34,11 @@
   "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\utilisateur.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\utilisateur.c\"",
   "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/utilisateur.c",
   "output": "CMakeFiles/Forum.dir/utilisateur.c.obj"
+},
+{
+  "directory": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/build",
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/Forum.dir/includes_C.rsp -g -Wall -Wextra -o CMakeFiles\\Forum.dir\\linked_lists.c.obj -c \"C:\\Users\\ASUS TUF\\Desktop\\Study\\Projects\\ForumDiscussion\\linked_lists.c\"",
+  "file": "C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/linked_lists.c",
+  "output": "CMakeFiles/Forum.dir/linked_lists.c.obj"
 }
 ]

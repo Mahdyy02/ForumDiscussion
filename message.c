@@ -1,107 +1,289 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "rubrique.h"
 #include "forum.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "linked_lists.h"
+#include "global.h"
 
 #define MAX_STRING_LENGTH 100
 #define MAX_LINE_LENGTH 256
 
-void saisir_message(MESSAGES* m){
+void saisir_message(MESSAGE* m){
+
+    // m->Numero_incription = utilisateur_actuel
+
     printf("Le titre de message est: ");
     m->Titre = (char*)malloc(MAX_STRING_LENGTH*sizeof(char));
     fgets(m->Titre, MAX_STRING_LENGTH, stdin);
+    m->Titre[strlen(m->Titre)-1] = '\0';
 
-    m->Numero_de_messages = 0;
-    m->Textes = (char**) malloc(MAX_STRING_LENGTH * sizeof(char*));
+    initialiser_liste(&m->Messages);
+
+    char message[MAX_LINE_LENGTH];
     do{
         printf("Le contenu de message(vide pour quitter): ");
-        unsigned int i = m->Numero_de_messages;
-        (m->Textes)[i] = (char*) malloc(MAX_STRING_LENGTH * sizeof(char));
-        fgets((m->Textes)[i], MAX_STRING_LENGTH, stdin);
-        // (m->Textes)[i][strlen((m->Textes)[i])-1] = '\0';
-        (m->Numero_de_messages)++;
-
-    } while(strcmp((m->Textes)[(m->Numero_de_messages) - 1], "\n") != 0);
-
-    (m->Numero_de_messages)--;
+        fgets(message, MAX_STRING_LENGTH, stdin);
+        if(strcmp(message, "\n") != 0){
+            message[strlen(message)-1] = '\0';
+            ajouter_element(&m->Messages, message);
+        }    
+    }while(strcmp(message, "\n") != 0);
     
 }
 
-void affichage_message(MESSAGES m){
+void affichage_message(MESSAGE m){
 
-    for(unsigned int i = 0; i < m.Numero_de_messages; i++){
+    printf("Le titre de message est: %s\n", m.Titre);
 
+        
+    Noeud *iter = m.Messages.tete;
+    for(int i = 0; iter != NULL; i++){
         if(i == 0){
-            printf("Le titre de message est: %s\n", m.Titre);
-            printf("premier message: \n");
-            printf("%s\n", m.Textes[i]);
+            printf("Premier message: \n");
+            printf("%s\n", iter->Valeur);
         }else{
             printf("Reply %i: \n", i);
-            printf("%s\n", m.Textes[i]);
+            printf("%s\n", iter->Valeur);
         }
+        iter = iter->Suivant;
+
     }
 
-    printf("la date de poste est: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
+    printf("La date de poste est: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
+    printf("===============================================\n");
 }
 
-void sauvegarder_message(MESSAGES m, RUBRIQUE r){
+void repondre_messsage(MESSAGE m, RUBRIQUE r){
+
+    MESSAGE reponse;
+    reponse.Titre = strdup(m.Titre);
+    reponse.Date_de_poste = m.Date_de_poste;
+
+    initialiser_liste(&reponse.Messages);
+    ajouter_element(&reponse.Messages, m.Messages.tete->Valeur);
+
+    char message[MAX_LINE_LENGTH];
+    do{
+        printf("La reponse au message '%s' (vide pour quitter): ", m.Messages.tete->Valeur);
+        fgets(message, MAX_STRING_LENGTH, stdin);
+        if(strcmp(message, "\n") != 0){
+            message[strlen(message)-1] = '\0';
+            ajouter_element(&reponse.Messages, message);
+        }    
+    }while(strcmp(message, "\n") != 0);
+
+    sauvegarder_message(reponse, r);
+
+}
+
+void sauvegarder_message(MESSAGE m, RUBRIQUE r){
 
     const char *DossierRubrique = r.Theme;
 
     if (chdir("../Rubriques") != 0) {
         fprintf(stderr, "Erreur lors du changement vers le répertoire rubriques.\n");
-        return;
+        exit(EXIT_FAILURE);
     }
 
     if (access(DossierRubrique, F_OK) == -1) {
         if (mkdir(DossierRubrique) != 0) {
             fprintf(stderr, "Erreur lors de la création du répertoire %s\n", DossierRubrique);
-            return;
+            exit(EXIT_FAILURE);
         }
     }
 
     if (chdir(DossierRubrique) != 0) {
         fprintf(stderr, "Erreur lors du changement vers le répertoire %s.\n", r.Theme);
-        return;
+        exit(EXIT_FAILURE);
     }
-
-    (m.Titre)[strlen(m.Titre) - 1] = '\0';
 
     char Nom_fichier_message[100];
     snprintf(Nom_fichier_message, sizeof(Nom_fichier_message), "%s_%s.txt", r.Theme, m.Titre);
 
-    FILE *Fichier_messages = fopen(Nom_fichier_message, "a");
+    int question_existe = 0;
 
-    if(Fichier_messages == NULL){
-        perror("Erreur de l'ouverture du fichier message.\n");
-        exit(0);
+    charger_rubriques(&f.Rubriques);
+    Noeud_rubrique *iter = f.Rubriques.tete;
+    while(iter != NULL){
+        if(strcmp(r.Theme, iter->valeur.Theme) == 0) break;
+        iter = iter->Suivant;
+    }
+    
+    Noeud_liste_de_message *iter_liste = iter->valeur.Listes_messages.tete;
+    while(iter_liste != NULL){
+        Noeud_message *iter_message = iter_liste->Valeur.tete;
+        while(iter_message != NULL){
+            if(strcmp(iter_message->Valeur.Messages.tete->Valeur, m.Messages.tete->Valeur) == 0){
+                question_existe = 1;
+                break;
+            }
+            iter_message = iter_message->Suivant;
+        }
+        if(question_existe) break;    
+        iter_liste = iter_liste->Suivant;
     }
 
-    fprintf(Fichier_messages, "Numero d'inscription: %i\n", m.Numero_incription);
-    fprintf(Fichier_messages, "Titre: %s\n", m.Titre);
-    fprintf(Fichier_messages, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
-    fprintf(Fichier_messages, "Nombre de messages: %i\n", m.Numero_de_messages);
-    fprintf(Fichier_messages, "Messages: %s", (m.Textes)[0]);
+    if(question_existe){
 
-    for(unsigned int i = 1; i < m.Numero_de_messages; i++){
-        fprintf(Fichier_messages, "Reply %i: %s", i, (m.Textes)[i]);
+        FILE *fichierEntree, *fichierTemporaire;
+        char ligne[MAX_LINE_LENGTH]; 
+
+        fichierEntree = fopen(Nom_fichier_message, "r");
+
+        if (fichierEntree == NULL){
+            perror("Erreur lors de l'ouverture du fichier");
+            exit(EXIT_FAILURE);
+        }
+
+        fichierTemporaire = fopen("fichiertemporaire.txt", "w");
+
+        if (fichierTemporaire == NULL){
+            perror("Erreur lors de l'ouverture du fichier temporaire");
+            fclose(fichierEntree);
+            exit(EXIT_FAILURE);
+        }
+
+        int flag = 0;
+        int nombre_de_reply = 0;
+
+        while (fgets(ligne, sizeof(ligne), fichierEntree) != NULL) {
+            
+            if(strstr(ligne, m.Messages.tete->Valeur) != NULL){
+                flag = 1;
+                fprintf(fichierTemporaire, "%s", ligne);
+            }else if(flag){
+                if(ligne[1] == '='){
+                    Noeud *iter = m.Messages.tete->Suivant;
+                    while(iter != NULL){                    
+                        fprintf(fichierTemporaire, "Reply %i: %s\n", ++nombre_de_reply, iter->Valeur);   
+                        iter = iter->Suivant;
+                    }
+                    flag = 0;
+
+                }else nombre_de_reply++;
+                fprintf(fichierTemporaire, "%s", ligne);
+            }else{
+                fprintf(fichierTemporaire, "%s", ligne);
+            }
+
+        }
+
+        fclose(fichierEntree);
+        fclose(fichierTemporaire);
+
+        remove(Nom_fichier_message);
+        rename("fichiertemporaire.txt", Nom_fichier_message);
+
+    }else{
+
+        FILE *Fichier_messages = fopen(Nom_fichier_message, "a");
+
+        if(Fichier_messages == NULL){
+            perror("Erreur de l'ouverture du fichier message.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        fprintf(Fichier_messages, "Numero d'inscription: %i\n", m.Numero_incription);
+        fprintf(Fichier_messages, "Titre: %s\n", m.Titre);
+        fprintf(Fichier_messages, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
+
+        if(m.Messages.tete == NULL){
+            printf("Erreur: le message n'admet pas de texte.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        fprintf(Fichier_messages, "Message: %s\n", m.Messages.tete->Valeur);
+
+        if(m.Messages.tete->Suivant != NULL){
+            Noeud* iter = m.Messages.tete->Suivant;
+            for(unsigned int i = 1; iter != NULL; i++){
+                fprintf(Fichier_messages, "Reply %i: %s\n", i, iter->Valeur);
+                iter = iter->Suivant;
+            }
+        }
+
+        fprintf(Fichier_messages, "========================================================\n");
+
+        fclose(Fichier_messages);
     }
 
-    fprintf(Fichier_messages, "========================================================\n");
-
-    if (chdir("..") != 0) {
+    if (chdir("..") != 0){
         perror("Erreur du retour vers le dossier principale.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    charger_rubriques(&f.Rubriques);
+
+}
+
+void initialiser_liste_de_messages(Liste_message* LM){
+    LM->tete = NULL;
+}
+
+void ajouter_liste_message(Liste_message* LM, MESSAGE m){
+
+    Noeud_message *nouveau_message = (Noeud_message*)malloc(sizeof(Noeud_message));
+    nouveau_message->Valeur = m;
+    nouveau_message->Suivant = NULL;
+
+    if(LM->tete == NULL){
+        LM->tete = nouveau_message;
         return;
     }
 
-    fclose(Fichier_messages);
+    Noeud_message *iter = LM->tete;
+    while(iter->Suivant != NULL) iter = iter->Suivant;
+    iter->Suivant = nouveau_message;
+
 }
 
-MESSAGES* charger_message(char* rep_message){
+void retirer_message(Liste_message* LM){
+
+    if(LM->tete == NULL) return;
+
+    if(LM->tete->Suivant == NULL){
+        free(LM->tete);
+        LM->tete = NULL;
+        return;
+    }
+
+    Noeud_message *iter = LM->tete;
+    while(iter->Suivant->Suivant != NULL) iter = iter->Suivant;
+    free(iter->Suivant);
+    iter->Suivant = NULL;
+
+}
+
+void detruire_liste_de_message(Liste_message* LM){
+    while(LM->tete != NULL) retirer_message(LM);
+}
+
+void retirer_liste_de_message(Liste_de_liste_de_message *LLM){
+
+    if(LLM->tete == NULL) return;
+
+    if(LLM->tete->Suivant == NULL){
+        detruire_liste_de_message(&LLM->tete->Valeur);
+        free(LLM->tete);
+        LLM->tete = NULL;
+        return;
+    }
+
+    Noeud_liste_de_message *iter_liste = LLM->tete;
+    while(iter_liste->Suivant->Suivant != NULL) iter_liste = iter_liste->Suivant;
+    detruire_liste_de_message(&iter_liste->Suivant->Valeur);
+    free(iter_liste->Suivant);
+    iter_liste->Suivant = NULL;
+}
+
+void detruire_liste_de_liste_de_message(Liste_de_liste_de_message *LLM){
+    while(LLM->tete != NULL) retirer_liste_de_message(LLM);
+}
+
+Liste_message charger_message(char* rep_message){
 
     FILE *Fichier_messages = fopen(rep_message, "r");
 
@@ -115,20 +297,14 @@ MESSAGES* charger_message(char* rep_message){
     char line[MAX_LINE_LENGTH];
     int index_of_start;
     int size;
-    int indice_de_message = 0;
+    
+    MESSAGE m;
+    initialiser_liste(&m.Messages);
 
-    MESSAGES* tableau_de_message = (MESSAGES*) malloc(1000*sizeof(MESSAGES));
-    size_t size_tableau_message = 0;
-
-    MESSAGES m;
-    m.Numero_de_messages = -1;
+    Liste_message LM;
+    initialiser_liste_de_messages(&LM);
 
     while (fgets(line, sizeof(line), Fichier_messages) != NULL) {
-
-
-        if(line[1] == '=' || line[0] == '\0'){
-            continue;    
-        }
 
         size = 0;
         index_of_start = first_index(line, strlen(line), ':');    
@@ -150,30 +326,20 @@ MESSAGES* charger_message(char* rep_message){
             m.Titre = strdup(chaine_a_lire);
         }else if(strcmp(nom_de_chaine_a_lire ,"Date de poste") == 0){
             m.Date_de_poste = charger_date(chaine_a_lire);
-        } else if(strcmp(nom_de_chaine_a_lire, "Nombre de messages") == 0){
-            m.Numero_de_messages = atoi(chaine_a_lire);
-            m.Textes = (char**) malloc((m.Numero_de_messages) * sizeof(char*));
-        } else {
-            m.Textes[indice_de_message++] = strdup(chaine_a_lire);
-        }
-
-        // printf("DEBUG 1: %i %i\n", indice_de_message, m.Numero_de_messages);
-
-        if(m.Numero_de_messages != -1 && (unsigned int)indice_de_message == m.Numero_de_messages){
-
-            if(size_tableau_message < 1000)   
-                tableau_de_message[size_tableau_message++] = m;
-
-            MESSAGES empty_message = {NULL, NULL};
-            tableau_de_message[size_tableau_message] = empty_message;
+        }else{
             
-            // MESSAGES m;
-            m.Numero_de_messages = -1;
-            indice_de_message = 0;
+            if(line[1] != '=' && line[0] != '\0'){
+                ajouter_element(&m.Messages, chaine_a_lire);
+            }else{
+                ajouter_liste_message(&LM, m);
+                initialiser_liste(&m.Messages);
+            }
+
         }
 
     }
     
     fclose(Fichier_messages);
-    return tableau_de_message;
+
+    return LM;
 }
