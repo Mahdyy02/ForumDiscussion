@@ -8,7 +8,6 @@ typedef struct{
     Liste Messages; 
     Date Date_de_poste;
     unsigned int Numero_incription;
-    
 }MESSAGE;
 
 typedef struct Noeud_message{

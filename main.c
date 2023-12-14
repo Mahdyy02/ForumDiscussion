@@ -5,241 +5,231 @@
 
 #define MAX_STRING_LENGTH 100
 
-void Menu_rubrique(RUBRIQUE r){
+void Menu_message(){
+    printf("Menu message\n");
+}
 
-    printf("DEBUG: Menu rubrique\n");
+void Menu_rubrique(RUBRIQUE *r){
 
-    // printf("\n********************************************************\n");
-    // printf("*                                                      *\n");
-    // printf("*                  Theme: %s                  *\n", r.Theme);
-    // printf("*                                                      *\n");
-    // printf("********************************************************\n");
+    while(1){
 
-    // while(1){
+        printf("\n********************************************************\n");
+        printf("*                                                      *\n");
+        printf("*                  Theme: %s                  *\n", r->Theme);
+        printf("*                                                      *\n");
+        printf("********************************************************\n");
 
-    //     printf("1. Ecrire un message dans la rubrique\n");
-    //     printf("2. Voir la liste des messages dans la rubrique\n");
-    //     printf("3. Retour vers le menu des rubriques\n");
-    //     printf("4. Quitter\n");
+        printf("1. Ecrire un message dans la rubrique\n");
+        printf("2. Voir la liste des messages dans la rubrique\n");
+        printf("3. Retour vers le menu des rubriques\n");
+        printf("4. Quitter\n");
 
-    //     unsigned short int choix;
-    //     printf("Donnez votre choix: "); scanf("%hu", &choix);
+        unsigned short int choix;
+        printf("Donnez votre choix: "); scanf("%hu", &choix);
 
-    //     while(getchar() != '\n');
+        while(getchar() != '\n');
 
-    //     switch(choix){
+        switch(choix){
 
-    //         case 1:{
+            case 1:{
+                MESSAGE m;
+                saisir_message(&m);
+                sauvegarder_message(m, *r);
+                break;
+            }
 
-    //             RUBRIQUE current_r;
+            case 2:{          
+                    Noeud_liste_de_message *iter_messages = r->Listes_messages.tete;
+                    unsigned int nombre_de_messages = 1;
+                    while(iter_messages != NULL){
+                        printf("%i. %s\n", nombre_de_messages, iter_messages->Valeur.tete->Valeur.Titre);
+                        nombre_de_messages++;
+                        iter_messages = iter_messages->Suivant;
+                    }
 
-    //             charger_rubriques(&Rubriques);
-    //             for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //                 charger_rubrique(Rubriques+i);
-    //             }
+                    printf("%i. Quitter\n", nombre_de_messages);
 
-    //             for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //                 if(Rubriques[i].Theme  == r.Theme){
-    //                     current_r = Rubriques[i];
-    //                     break;
-    //                 }    
-    //             }
+                    unsigned short int sous_choix;
+                    printf("Donnez votre choix: "); scanf("%hu", &sous_choix);
 
-    //             MESSAGE m;
-    //             saisir_message(&m);
-    //             sauvegarder_message(m, current_r);
-    //             break;
+                    while(getchar() != '\n');
 
-    //             free_rubriques(Rubriques, f.Nombres_Rubriques);
-    //         }
+                    if(sous_choix == nombre_de_messages){
+                        free_utilisateurs();
+                        detruire_liste_rubrique(&f.Rubriques);
+                        exit(EXIT_SUCCESS);
+                    }    
+                    if(sous_choix > 0 && sous_choix < nombre_de_messages){
+                        Noeud_liste_de_message *iter_messages = r->Listes_messages.tete;
+                        for(unsigned int i = 1; i < sous_choix; i++){
+                            iter_messages = iter_messages->Suivant;
+                        }
+                        printf("\n");
+                        Noeud_message *iter_message = iter_messages->Valeur.tete;
+                        while(iter_message !=NULL){
+                            affichage_message(iter_message->Valeur);
+                            iter_message = iter_message->Suivant;
+                        }
+                        Menu_message();
+                    }else printf("Votre choix est invalide.\n");
 
-    //         case 2:{
-
-    //                 RUBRIQUE current_r;
-
-    //                 charger_rubriques(&Rubriques);
-    //                 for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //                     charger_rubrique(Rubriques+i);
-    //                 }
-
-    //                 for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //                     if(Rubriques[i].Theme  == r.Theme){
-    //                         current_r = Rubriques[i];
-    //                         break;
-    //                     }    
-    //                 }
-                    
-    //                 for(unsigned int i = 0; i < r.Numero_messages; i++)
-    //                     printf("%i. %s\n", i+1, r.Messages[i][0].Titre);
-
-    //                 printf("%i. Quitter\n", r.Numero_messages+1);
-
-    //                  unsigned short int sous_choix;
-    //                 printf("Donnez votre choix: "); scanf("%hu", &sous_choix);
-
-    //                 while(getchar() != '\n');
-
-    //                 if(sous_choix == r.Numero_messages+1){
-    //                     exit(0);
-    //                     free_utilisateurs();
-    //                 }    
-    //                 if(sous_choix > 0 && sous_choix <=r.Numero_messages){
-    //                     for(unsigned int i = 0; r.Messages[sous_choix-1][i].Titre != NULL; i++){
-    //                         affichage_message(r.Messages[sous_choix-1][i]);
-    //                         printf("\n\n********************************************************\n");
-    //                     }
-    //                 }  
-
-    //                 free_rubriques(Rubriques, f.Nombres_Rubriques);  
-
-    //             break;
-    //         }
-
-    //         case 4:{
-    //             free_utilisateurs();
-    //             exit(0);
-    //             break;
-    //         }
-
-    //         default:
-    //             printf("Votre choix est invalide\n");
-    //             break;
-
-    //     }
-
-    //     if(choix == 3) break;
-
-    // }
-    
+                break;
+            }case 3:{
 
 
+                break;
+            }
+
+            case 4:{
+                free_utilisateurs();
+                detruire_liste_rubrique(&f.Rubriques);
+                exit(EXIT_SUCCESS);
+                break;
+            }
+
+            default:
+                printf("Votre choix est invalide.\n");
+                break;
+
+        }
+        if(choix == 3) break;
+    }
 }
 
 void Menu_rubriques(){
 
-    printf("DEBUG: Menu rubriques\n");
+    while(1){
 
-    // printf("\n********************************************************\n");
-    // printf("*                                                      *\n");
-    // printf("*                  Menu Des Rubriques                  *\n");
-    // printf("*                                                      *\n");
-    // printf("********************************************************\n");
-
-    // while(1){
+        printf("\n********************************************************\n");
+        printf("*                                                      *\n");
+        printf("*                  Menu Des Rubriques                  *\n");
+        printf("*                                                      *\n");
+        printf("********************************************************\n");
     
-    //     printf("1. Voir les rubriques\n");
-    //     printf("2. Ajouter un rubrique\n");
-    //     printf("3. Se deconnecter\n");
-    //     printf("4. Quitter\n");
+        printf("1. Voir les rubriques\n");
+        printf("2. Ajouter une rubrique\n");
+        printf("3. Se deconnecter\n");
+        printf("4. Quitter\n");
 
-    //     unsigned short int choix;
-    //     printf("Donnez votre choix: "); scanf("%hu", &choix);
+        unsigned short int choix;
+        printf("Donnez votre choix: "); scanf("%hu", &choix);
 
-    //     while(getchar() != '\n');
+        while(getchar() != '\n');
 
-    //     switch(choix){
+        switch(choix){
 
-    //         case 1:{
-    //                 while(1){
+            case 1:{
+                while(1){
+                
+                    printf("\n********************************************************\n");
+                    printf("*                                                      *\n");
+                    printf("*                  Page Des Rubriques                  *\n");
+                    printf("*                                                      *\n");
+                    printf("********************************************************\n");
+
+
+                    Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
+                    unsigned int nombre_rubriques = 1;
+                    while(iter_rubrique != NULL){
+                        printf("%i. %s\n",nombre_rubriques ,iter_rubrique->valeur.Theme);
+                        nombre_rubriques++;
+                        iter_rubrique = iter_rubrique->Suivant;
+                    }
+
+                    printf("%i. Retour vers le menu précédant\n", nombre_rubriques);
+                    printf("%i. Quitter\n", nombre_rubriques+1);
+
+                    unsigned int choix;
+                    printf("Donnez votre choix: "); scanf("%u", &choix);
+
+                    while(getchar() != '\n');
+
+                    if(choix == nombre_rubriques) break;
+                    if(choix == nombre_rubriques+1){
+                        detruire_liste_rubrique(&f.Rubriques);
+                        free_utilisateurs();
+                        exit(EXIT_SUCCESS);
+                    }
+
+                    if(choix > 0 && choix < nombre_rubriques){
+                        printf("\n\n********************************************************\n");
+                        Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
+                        for(unsigned int i = 1; i < choix; i++){
+                            iter_rubrique = iter_rubrique->Suivant;
+                        }
+                        affichage_rubrique(iter_rubrique->valeur);
+                        printf("\n");
+                        Menu_rubrique(&iter_rubrique->valeur);
+                    }else printf("Votre choix est invalide\n");
+                }
+                break;
+            }
+            case 2:{
+                RUBRIQUE r;
+                saisir_rubrique(&r);
+                Menu_rubrique(&r);
+                break;
+            }
+            case 4:{
+                free_utilisateurs();
+                detruire_liste_rubrique(&f.Rubriques);
+                exit(EXIT_SUCCESS);
+                break;
+            }
+            default:
+                printf("Votre choix est invalide\n");
+                break;
+        }
+
+        if(choix == 3) break;
     
-    //                 printf("\n********************************************************\n");
-    //                 printf("*                                                      *\n");
-    //                 printf("*                  Page Des Rubriques                  *\n");
-    //                 printf("*                                                      *\n");
-    //                 printf("********************************************************\n");
-
-    //                 charger_rubriques(&Rubriques);
-    //                 for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //                     charger_rubrique(Rubriques+i);
-    //                 }
-
-    //                 for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //                     printf("%i. %s\n", i+1, Rubriques[i].Theme);
-    //                 }
-
-    //                 printf("%i. Retour vers le menu précédant\n", f.Nombres_Rubriques+1);
-    //                 printf("%i. Quitter\n", f.Nombres_Rubriques+2);
-
-    //                 unsigned int choix;
-    //                 printf("Donnez votre choix: "); scanf("%u", &choix);
-
-    //                 while(getchar() != '\n');
-
-    //                 if(choix == f.Nombres_Rubriques+1) break;
-    //                 if(choix == f.Nombres_Rubriques+2) exit(0);
-
-    //                 if(choix > 0 && choix <= f.Nombres_Rubriques){
-    //                     printf("\n\n********************************************************\n"); 
-    //                     affichage_rubrique(Rubriques[choix-1]);
-    //                     printf("\n");
-    //                     Menu_rubrique(Rubriques[choix-1]);
-    //                     free_rubriques(Rubriques, f.Nombres_Rubriques);
-    //                 }else printf("Votre choix est invalide\n");
-    //             }
-    //             break;
-    //         }
-    //         case 2:{
-    //             RUBRIQUE r;
-    //             saisir_rubrique(&r);
-    //             break;
-    //         }
-    //         case 4:{
-    //             free_utilisateurs();
-    //             exit(0);
-    //             break;
-    //         }
-    //         default:
-    //             printf("Votre choix est invalide\n");
-    //             break;
-    //     }
-
-    //     if(choix == 3) break;
-    
-    // }
+    }
 }
 
 void Menu_invite(){
 
-    printf("DEBUG: Menu invité\n");
-
-    // while(1){
+    while(1){
     
-    //     printf("\n********************************************************\n");
-    //     printf("*                                                      *\n");
-    //     printf("*                  Page Des Rubriques                  *\n");
-    //     printf("*                                                      *\n");
-    //     printf("********************************************************\n");
+        printf("\n********************************************************\n");
+        printf("*                                                      *\n");
+        printf("*                  Page Des Rubriques                  *\n");
+        printf("*                                                      *\n");
+        printf("********************************************************\n");
 
-    //     charger_rubriques(&Rubriques);
-    //     for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //         charger_rubrique(Rubriques+i);
-    //     }
 
-    //     for(unsigned int i = 0; i < f.Nombres_Rubriques; i++){
-    //         printf("%i. %s\n", i+1, Rubriques[i].Theme);
-    //     }
+        Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
+        unsigned int nombre_rubriques = 1;
+        while(iter_rubrique != NULL){
+            printf("%i. %s\n",nombre_rubriques ,iter_rubrique->valeur.Theme);
+            nombre_rubriques++;
+            iter_rubrique = iter_rubrique->Suivant;
+        }
 
-    //     printf("%i. Retour vers le menu précédant\n", f.Nombres_Rubriques+1);
-    //     printf("%i. Quitter\n", f.Nombres_Rubriques+2);
+        printf("%i. Retour vers le menu précédant\n", nombre_rubriques);
+        printf("%i. Quitter\n", nombre_rubriques+1);
 
-    //     unsigned int choix;
-    //     printf("Donnez votre choix: "); scanf("%u", &choix);
+        unsigned int choix;
+        printf("Donnez votre choix: "); scanf("%u", &choix);
 
-    //     while(getchar() != '\n');
+        while(getchar() != '\n');
 
-    //     if(choix == f.Nombres_Rubriques+1) break;
-    //     if(choix == f.Nombres_Rubriques+2){
-    //         exit(0);
-    //         free_utilisateurs();
-    //     }
+        if(choix == nombre_rubriques) break;
+        if(choix == nombre_rubriques+1){
+            detruire_liste_rubrique(&f.Rubriques);
+            free_utilisateurs();
+            exit(EXIT_SUCCESS);
+        }
 
-    //     if(choix > 0 && choix <= f.Nombres_Rubriques){ 
-    //         printf("\n\n********************************************************\n");
-    //         affichage_rubrique(Rubriques[choix-1]);
-    //         printf("\n");
-    //         free_rubriques(Rubriques, f.Nombres_Rubriques);
-    //     }else printf("Votre choix est invalide\n");
-    // }
+        if(choix > 0 && choix < nombre_rubriques){
+            printf("\n\n********************************************************\n");
+            Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
+            for(unsigned int i = 1; i < choix; i++){
+                iter_rubrique = iter_rubrique->Suivant;
+            }
+            affichage_rubrique(iter_rubrique->valeur);
+            printf("\n");
+        }else printf("Votre choix est invalide\n");
+    }
 
 } 
 
@@ -256,7 +246,7 @@ int main(){
 
     while(1){
 
-        unsigned short int choix = -1;
+        unsigned short int choix;
         
         printf("********************************************************\n");
         printf("*                                                      *\n");
@@ -324,7 +314,7 @@ int main(){
             case 4:{
                 detruire_liste_rubrique(&f.Rubriques);
                 free_utilisateurs();
-                exit(0);
+                exit(EXIT_SUCCESS);
                 break;          
             }
             default:{
