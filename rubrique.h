@@ -40,5 +40,8 @@ void initialiser_liste_rubriques(Liste_rubrique*);
 void repondre_messsage(MESSAGE, RUBRIQUE);
 unsigned int nombre_rubriques();
 void detruire_liste_rubrique(Liste_rubrique*);
+void ajouter_rubrique(Liste_rubrique*, RUBRIQUE);
+void initialiser_liste_de_liste_de_message(Liste_de_liste_de_message*);
+void ajouter_liste_de_message(Liste_de_liste_de_message*, Liste_message);
 
 #endif

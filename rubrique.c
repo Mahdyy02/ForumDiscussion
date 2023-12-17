@@ -15,6 +15,7 @@ void saisir_rubrique(RUBRIQUE* r){
 
     r->Numero_inscription = u.Numero_inscription;
     r->Date_de_poste = date_actuelle();
+    initialiser_liste_de_liste_de_message(&r->Listes_messages);
     
     while(1){
         printf("Theme de la rubrique: ");
@@ -47,6 +48,7 @@ void saisir_rubrique(RUBRIQUE* r){
         }    
     }while(strcmp(site_internet, "\n") != 0);
 
+    ajouter_rubrique(&f.Rubriques, *r);
     sauvegarder_rubrique(*r);
 
 }
@@ -61,17 +63,6 @@ void affichage_rubrique(RUBRIQUE r){
         printf("Site %i: %s\n", i+1, iter->Valeur);
         iter = iter->Suivant;
     }
-
-    // Noeud_liste_de_message *iter_liste = r.Listes_messages.tete;
-    // while(iter_liste != NULL){
-    //     Noeud_message *iter = iter_liste->Valeur.tete;
-    //     while(iter != NULL){
-    //         affichage_message(iter->Valeur);
-    //         iter = iter->Suivant;
-    //     }
-
-    //     iter_liste = iter_liste->Suivant;
-    // }
 
 }
 
@@ -156,8 +147,6 @@ void charger_rubrique(RUBRIQUE* r) {
 
                         if(strcmp(nom_de_chaine_a_lire, "Numero d'inscription") == 0){
                             r->Numero_inscription = atoi(chaine_a_lire);
-                        }else if(strcmp(nom_de_chaine_a_lire, "Theme") == 0){
-                            r->Theme = strdup(chaine_a_lire);
                         }else if(strcmp(nom_de_chaine_a_lire ,"Date de poste") == 0){
                             r->Date_de_poste = charger_date(chaine_a_lire);
                         }else{
@@ -232,8 +221,6 @@ void sauvegarder_rubrique(RUBRIQUE r){
 
     fclose(Fichier_rubrique);
 
-    charger_rubriques(&f.Rubriques);
-
 }
 
 void initialiser_liste_rubriques(Liste_rubrique *LR){
@@ -268,6 +255,7 @@ void retirer_rubrique(Liste_rubrique* LR){
         detruire_liste_de_liste_de_message(&LR->tete->valeur.Listes_messages);
         free(LR->tete);
         LR->tete = NULL;
+        return;
     }
 
     Noeud_rubrique *iter = LR->tete;
@@ -291,6 +279,7 @@ void charger_rubriques(Liste_rubrique *LR) {
         exit(EXIT_FAILURE);
     }
 
+    if(LR->tete != NULL) detruire_liste_rubrique(LR);
     initialiser_liste_rubriques(LR);
 
     while (1){
@@ -305,6 +294,7 @@ void charger_rubriques(Liste_rubrique *LR) {
         }
     }
     closedir(dossier);
+
 }
 
 unsigned int nombre_rubriques(){

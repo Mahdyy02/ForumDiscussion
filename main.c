@@ -33,12 +33,12 @@ void Menu_rubrique(RUBRIQUE *r){
 
             case 1:{
                 MESSAGE m;
-                saisir_message(&m);
+                saisir_message(&m, 1);
                 sauvegarder_message(m, *r);
                 break;
             }
 
-            case 2:{          
+            case 2:{ 
                     Noeud_liste_de_message *iter_messages = r->Listes_messages.tete;
                     unsigned int nombre_de_messages = 1;
                     while(iter_messages != NULL){
@@ -47,14 +47,16 @@ void Menu_rubrique(RUBRIQUE *r){
                         iter_messages = iter_messages->Suivant;
                     }
 
-                    printf("%i. Quitter\n", nombre_de_messages);
+                    printf("%i. Retour vers le menu precedant\n", nombre_de_messages);
+                    printf("%i. Quitter\n", nombre_de_messages+1);
 
                     unsigned short int sous_choix;
                     printf("Donnez votre choix: "); scanf("%hu", &sous_choix);
 
                     while(getchar() != '\n');
 
-                    if(sous_choix == nombre_de_messages){
+                    if(sous_choix == nombre_de_messages) break;
+                    if(sous_choix == nombre_de_messages+1){
                         free_utilisateurs();
                         detruire_liste_rubrique(&f.Rubriques);
                         exit(EXIT_SUCCESS);
@@ -72,10 +74,6 @@ void Menu_rubrique(RUBRIQUE *r){
                         }
                         Menu_message();
                     }else printf("Votre choix est invalide.\n");
-
-                break;
-            }case 3:{
-
 
                 break;
             }
