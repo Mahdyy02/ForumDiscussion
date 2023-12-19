@@ -1,0 +1,8 @@
+Numero d'inscription: 7
+Titre: LeProcesenium
+Date de poste: 16/12/2023
+Type: 1
+Message: le procesenium
+Reply 1: La plus grande bibliotheque de textes
+Reply 2: Il s'agit de recueils de textes de differents auteurs
+========================================================
