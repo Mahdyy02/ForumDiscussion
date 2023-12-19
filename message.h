@@ -20,7 +20,7 @@ typedef struct Liste_message{
     struct Noeud_message* tete;
 }Liste_message;
 
-void saisir_message(MESSAGE*, unsigned short int);
+void saisir_message(MESSAGE*, MESSAGE*, unsigned short int);
 void affichage_message(MESSAGE);
 Liste_message charger_message(char*);
 void initialiser_liste_de_messages(Liste_message*);

@@ -30,14 +30,14 @@ typedef struct Liste_rubrique{
 
 void affichage_rubrique(RUBRIQUE);
 void saisir_rubrique(RUBRIQUE*);
-void sauvegarder_message(MESSAGE, RUBRIQUE);
+void sauvegarder_message(MESSAGE, MESSAGE*, RUBRIQUE);
 void charger_rubrique(RUBRIQUE*);
 void sauvegarder_rubrique(RUBRIQUE);
 void retirer_liste_de_message(Liste_de_liste_de_message *);
 void detruire_liste_de_liste_de_message(Liste_de_liste_de_message *);
 void charger_rubriques(Liste_rubrique*);
 void initialiser_liste_rubriques(Liste_rubrique*);
-void repondre_messsage(MESSAGE, RUBRIQUE);
+void repondre_messsage_anonyme(MESSAGE, RUBRIQUE);
 unsigned int nombre_rubriques();
 void detruire_liste_rubrique(Liste_rubrique*);
 void ajouter_rubrique(Liste_rubrique*, RUBRIQUE);

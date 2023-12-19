@@ -5,8 +5,100 @@
 
 #define MAX_STRING_LENGTH 100
 
-void Menu_message(){
-    printf("Menu message\n");
+void Menu_message(Liste_message* LM, RUBRIQUE *r){
+        while(1){
+
+        printf("\n********************************************************\n");
+        printf("*                                                      *\n");
+        printf("*                  Titre: %s                  *\n", LM->tete->Valeur.Titre);
+        printf("*                                                      *\n");
+        printf("********************************************************\n");
+
+        printf("1. Voir tout les messages\n");
+        printf("2. Repondre a une question\n");
+        printf("3. Retour vers le menu des rubriques\n");
+        printf("4. Quitter\n");
+
+        unsigned short int choix;
+        printf("Donnez votre choix: "); scanf("%hu", &choix);
+
+        while(getchar() != '\n');
+
+        if(choix == 3) break;
+
+        switch (choix){
+        case 1:{
+            Noeud_message *iter_message = LM->tete;
+            while(iter_message !=NULL){
+                affichage_message(iter_message->Valeur);
+                iter_message = iter_message->Suivant;
+            }
+            break;
+        }
+        case 2:{
+            unsigned int nombre_questions = 1;
+            Noeud_message *iter_message = LM->tete;
+            while(iter_message !=NULL){
+                if(iter_message->Valeur.question) printf("%i. %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
+                iter_message = iter_message->Suivant;
+            }
+            printf("%i. Retour vers le menu précedant\n", nombre_questions);
+            printf("%i. Quiter\n", nombre_questions+1);
+
+            unsigned short int sous_choix;
+            printf("Donnez votre choix: "); scanf("%hu", &sous_choix);
+
+            while(getchar() != '\n');
+
+            if(sous_choix == nombre_questions) break;
+            if(sous_choix == nombre_questions+1){
+                free_utilisateurs();
+                detruire_liste_rubrique(&f.Rubriques);
+                exit(EXIT_SUCCESS);
+            }    
+            if(sous_choix > 0 && sous_choix < nombre_questions){
+                Noeud_message *iter_message = LM->tete;
+                for(unsigned int i = 1; i < sous_choix; i++){
+                    iter_message = iter_message->Suivant;
+                }
+                MESSAGE m = iter_message->Valeur;
+                printf("1. Repondre anonymement\n");
+                printf("2. Repondre en tant que %s\n", u.Pseudo);
+                
+                unsigned short int sous_sous_choix;
+                printf("Donnez votre choix: "); scanf("%hu", &sous_sous_choix);
+                while(getchar() != '\n');
+
+                switch (sous_sous_choix){
+                case 1:{
+                    repondre_messsage_anonyme(m, *r);
+                    break;
+                }
+                case 2:{
+                    MESSAGE reponse;
+                    saisir_message(&reponse, &m, 0);
+                    sauvegarder_message(reponse, &m, *r);
+                    break;
+                }                
+                default:
+                    printf("Votre choix est invalide\n");
+                    break;
+                }
+            }else printf("Votre choix est invalide.\n");
+
+        break;
+        }
+        case 4:{
+            free_utilisateurs();
+            detruire_liste_rubrique(&f.Rubriques);
+            exit(EXIT_SUCCESS);            
+        }
+        default:
+            printf("Votre choix est invalide.\n");
+            break;
+        }
+
+    }    
 }
 
 void Menu_rubrique(RUBRIQUE *r){
@@ -33,8 +125,8 @@ void Menu_rubrique(RUBRIQUE *r){
 
             case 1:{
                 MESSAGE m;
-                saisir_message(&m, 1);
-                sauvegarder_message(m, *r);
+                saisir_message(&m, NULL, 1);
+                sauvegarder_message(m, NULL, *r);
                 break;
             }
 
@@ -66,13 +158,7 @@ void Menu_rubrique(RUBRIQUE *r){
                         for(unsigned int i = 1; i < sous_choix; i++){
                             iter_messages = iter_messages->Suivant;
                         }
-                        printf("\n");
-                        Noeud_message *iter_message = iter_messages->Valeur.tete;
-                        while(iter_message !=NULL){
-                            affichage_message(iter_message->Valeur);
-                            iter_message = iter_message->Suivant;
-                        }
-                        Menu_message();
+                        Menu_message(&iter_messages->Valeur, r);
                     }else printf("Votre choix est invalide.\n");
 
                 break;
