@@ -8,4 +8,5 @@ CMakeFiles/Forum.dir/date.c.obj: \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\stdarg.h \
  c:\mingw\include\string.h c:\mingw\include\strings.h \
  c:\mingw\include\wchar.h c:\mingw\include\stdlib.h \
- C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\date.h
+ C:\Users\ASUS\ TUF\Desktop\Study\Projects\ForumDiscussion\date.h \
+ c:\mingw\include\time.h c:\mingw\include\sys\types.h

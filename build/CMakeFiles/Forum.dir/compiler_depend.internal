@@ -12,6 +12,8 @@ CMakeFiles/Forum.dir/date.c.obj
  C:/MinGW/include/string.h
  C:/MinGW/include/strings.h
  C:/MinGW/include/sys/types.h
+ C:/MinGW/include/sys/types.h
+ C:/MinGW/include/time.h
  C:/MinGW/include/w32api.h
  C:/MinGW/include/wchar.h
  C:/MinGW/lib/gcc/mingw32/6.3.0/include/stdarg.h
@@ -95,6 +97,7 @@ CMakeFiles/Forum.dir/message.c.obj
  C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/rubrique.h
  C:/Users/ASUS TUF/Desktop/Study/Projects/ForumDiscussion/utilisateur.h
  C:/MinGW/include/_mingw.h
+ C:/MinGW/include/ctype.h
  C:/MinGW/include/getopt.h
  C:/MinGW/include/io.h
  C:/MinGW/include/msvcrtver.h
@@ -111,6 +114,7 @@ CMakeFiles/Forum.dir/message.c.obj
  C:/MinGW/include/unistd.h
  C:/MinGW/include/w32api.h
  C:/MinGW/include/wchar.h
+ C:/MinGW/include/wctype.h
  C:/MinGW/lib/gcc/mingw32/6.3.0/include/stdarg.h
  C:/MinGW/lib/gcc/mingw32/6.3.0/include/stddef.h
 

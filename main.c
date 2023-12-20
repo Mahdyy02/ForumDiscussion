@@ -10,7 +10,7 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
 
         printf("\n********************************************************\n");
         printf("*                                                      *\n");
-        printf("*                  Titre: %s                  *\n", LM->tete->Valeur.Titre);
+        printf("*             Titre: %s             *\n", LM->tete->Valeur.Titre);
         printf("*                                                      *\n");
         printf("********************************************************\n");
 
@@ -45,8 +45,8 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
             printf("%i. Retour vers le menu précedant\n", nombre_questions);
             printf("%i. Quiter\n", nombre_questions+1);
 
-            unsigned short int sous_choix;
-            printf("Donnez votre choix: "); scanf("%hu", &sous_choix);
+            unsigned int sous_choix;
+            printf("Donnez votre choix: "); scanf("%u", &sous_choix);
 
             while(getchar() != '\n');
 
@@ -58,12 +58,16 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
             }    
             if(sous_choix > 0 && sous_choix < nombre_questions){
                 Noeud_message *iter_message = LM->tete;
-                for(unsigned int i = 1; i < sous_choix; i++){
+                unsigned int i = 1;
+                while(i < sous_choix){
                     iter_message = iter_message->Suivant;
+                    if (iter_message->Valeur.question) i++;
                 }
                 MESSAGE m = iter_message->Valeur;
                 printf("1. Repondre anonymement\n");
                 printf("2. Repondre en tant que %s\n", u.Pseudo);
+                printf("3. Retour vers le menu precedant\n");
+                printf("4. Quitter\n");
                 
                 unsigned short int sous_sous_choix;
                 printf("Donnez votre choix: "); scanf("%hu", &sous_sous_choix);
@@ -76,9 +80,15 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
                 }
                 case 2:{
                     MESSAGE reponse;
-                    saisir_message(&reponse, &m, 0);
+                    saisir_message(&reponse, &m, 0); 
                     sauvegarder_message(reponse, &m, *r);
                     break;
+                }
+                case 3: break;
+                case 4:{
+                    free_utilisateurs();
+                    detruire_liste_rubrique(&f.Rubriques);
+                    exit(EXIT_SUCCESS);
                 }                
                 default:
                     printf("Votre choix est invalide\n");
@@ -317,6 +327,58 @@ void Menu_invite(){
 
 } 
 
+void Menu_administrateur(){
+
+    while(1){
+
+        printf("********************************************************\n");
+        printf("*                                                      *\n");
+        printf("*                 Page d'administration                *\n");
+        printf("*                                                      *\n");
+        printf("********************************************************\n");
+
+        printf("1. Voir la liste de tout les utilisateurs\n");
+        printf("2. Voir tout les rubriques\n");
+        printf("3. Voir les statistiques\n");
+        printf("4. Entrer le forum en tant que utilisateur\n");
+        printf("5. Retour vers le menu precedant\n");
+        printf("6. Quitter\n");
+
+        unsigned short int choix;
+        printf("Donnez le choix: "); scanf("%hu", &choix);
+        while(getchar() != '\n');
+
+        if(choix == 5) break;
+        
+        switch (choix){
+        case 1:{
+            /* code */
+            break;
+        }
+        case 2:{
+            /* code */
+            break;
+        }
+        case 3:{
+            /* code */
+            break;
+        }
+        case 4:{
+            Menu_rubriques();
+            break;
+        }
+        case 6:{
+            /* code */
+            break;
+        }
+        default:
+            printf("Votre choix est invalide.\n");
+            break;
+        }
+
+    }    
+}
+
 int main(){
 
     charger_rubriques(&f.Rubriques);
@@ -329,8 +391,6 @@ int main(){
     charger_utilisateur();
 
     while(1){
-
-        unsigned short int choix;
         
         printf("********************************************************\n");
         printf("*                                                      *\n");
@@ -342,6 +402,7 @@ int main(){
         printf("2. S'inscrire en tant que utilisateur\n");
         printf("3. Se connecter\n");
         printf("4. Quitter\n");
+        unsigned short int choix;
         printf("Donnez le choix: "); scanf("%hu", &choix);
 
         while(getchar() != '\n');
@@ -390,7 +451,10 @@ int main(){
                     }
                 }
 
-                if(u.Adresse_email != NULL) Menu_rubriques();
+                if(u.Adresse_email != NULL){
+                    if(u.Administrateur) Menu_administrateur();
+                    else Menu_rubriques();
+                }
                 else if(!mot_de_passe_incorrect) printf("Vous n'êtes pas inscrits.\n");
         
                 break; 
