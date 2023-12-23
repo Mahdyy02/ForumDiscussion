@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "forum.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -14,7 +13,7 @@
 
 void saisir_message(MESSAGE* m, MESSAGE* reponse, unsigned short int question){
 
-    m->Numero_incription = u.Numero_inscription;
+    m->Numero_inscription = u.Numero_inscription;
     m->Date_de_poste = date_actuelle();
     m->question = question;
     initialiser_liste(&m->Messages);
@@ -65,7 +64,10 @@ void saisir_message(MESSAGE* m, MESSAGE* reponse, unsigned short int question){
 
 void affichage_message(MESSAGE m){
 
-    printf("Le titre de message est: %s\n", m.Titre);
+    if(f.Utilisateurs[m.Numero_inscription].Interdit) return;
+
+    printf("Titre: %s\n", m.Titre);
+    printf("Auteur: %s\n", f.Utilisateurs[m.Numero_inscription].Pseudo);
 
     if(m.question) printf("Type: Question\n");
     else printf("Type: Réponse\n");
@@ -262,7 +264,7 @@ void sauvegarder_message(MESSAGE m, MESSAGE *rm, RUBRIQUE r){
             exit(EXIT_FAILURE);
         }
 
-        fprintf(Fichier_messages, "Numero d'inscription: %i\n", m.Numero_incription);
+        fprintf(Fichier_messages, "Numero d'inscription: %i\n", m.Numero_inscription);
         fprintf(Fichier_messages, "Titre: %s\n", m.Titre);
         fprintf(Fichier_messages, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
         fprintf(Fichier_messages, "Type: %i\n", m.question);
@@ -359,7 +361,7 @@ void sauvegarder_message(MESSAGE m, MESSAGE *rm, RUBRIQUE r){
 
                     fprintf(fichierTemporaire, "%s", ligne);
 
-                    fprintf(fichierTemporaire, "Numero d'inscription: %i\n", m.Numero_incription);
+                    fprintf(fichierTemporaire, "Numero d'inscription: %i\n", m.Numero_inscription);
                     fprintf(fichierTemporaire, "Titre: %s\n", m.Titre);
                     fprintf(fichierTemporaire, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
                     fprintf(fichierTemporaire, "Type: %i\n", m.question);
@@ -507,7 +509,7 @@ Liste_message charger_message(char* rep_message){
         chaine_a_lire[size-1] = '\0';
 
         if(strcmp(nom_de_chaine_a_lire, "Numero d'inscription") == 0){
-            m.Numero_incription = atoi(chaine_a_lire);
+            m.Numero_inscription = atoi(chaine_a_lire);
         }else if(strcmp(nom_de_chaine_a_lire, "Titre") == 0){
             m.Titre = strdup(chaine_a_lire);
         }else if(strcmp(nom_de_chaine_a_lire ,"Date de poste") == 0){
@@ -530,4 +532,20 @@ Liste_message charger_message(char* rep_message){
     fclose(Fichier_messages);
 
     return LM;
+}
+
+void voir_messages_utilisateur(UTILISATEUR* u){
+    Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
+    while(iter_rubriques != NULL){
+        Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
+        while(iter_messages!=NULL){
+            Noeud_message *iter_message = iter_messages->Valeur.tete;
+            while(iter_message != NULL){
+                if(iter_message->Valeur.Numero_inscription == u->Numero_inscription) affichage_message(iter_message->Valeur);
+                iter_message = iter_message->Suivant;
+            }
+            iter_messages = iter_messages->Suivant;
+        }
+        iter_rubriques = iter_rubriques->Suivant;
+    }
 }

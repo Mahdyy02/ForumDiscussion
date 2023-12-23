@@ -13,6 +13,7 @@ typedef struct{
     char* Password;
     char* Pseudo;
     unsigned short int Administrateur;
+    unsigned short int Interdit;
 
 }UTILISATEUR;
 
@@ -22,5 +23,7 @@ void sauvegarder_utilisateur(UTILISATEUR);
 void charger_utilisateur();
 int first_index(char*, int, char);
 void free_utilisateurs();
+void basculer_interdiction_utilisateur(UTILISATEUR*);
+void voir_messages_utilisateur(UTILISATEUR*);
 
 #endif

@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "utilisateur.h"
-#include "date.h"
-#include "forum.h"
 #include "global.h"
 #include <string.h>
 #include <ctype.h>
@@ -34,7 +32,6 @@ int first_index(char* s, int size, char c){
 }
 
 void inscription(UTILISATEUR* u){
-
 
     printf("********************************************************\n");
     printf("*                                                      *\n");
@@ -146,6 +143,7 @@ void inscription(UTILISATEUR* u){
     fgets(u->Pseudo, MAX_STRING_LENGTH, stdin);
     (u->Pseudo)[strlen(u->Pseudo) - 1] = '\0'; 
 
+    u->Interdit = 0;
     u->Numero_inscription = ++(f.Nombre_utilisateurs);
     sauvegarder_utilisateur(*u);
 
@@ -193,20 +191,6 @@ void sauvegarder_utilisateur(UTILISATEUR u){
 }
 
 void charger_utilisateur(){
-
-
-    // /////////////////////////////////////////////////////////////////////////////////
-                
-    // char cwd[1024];
-
-    // if (getcwd(cwd, sizeof(cwd)) != NULL) {
-    //     printf("Current working directory: %s\n", cwd);
-    // } else {
-    //     perror("getcwd() error");
-    //     return 1;
-    // }
-
-    // /////////////////////////////////////////////////////////////////////////////////
 
     FILE *Fichier_utilisateurs = fopen("utilisateurs.txt", "r");
 
@@ -262,9 +246,11 @@ void charger_utilisateur(){
                     u.Pseudo = strdup(jeton);
                     break;
                 case 9:
-                    u.Administrateur = (int)atoi(jeton);
-                    break;   
-
+                    u.Administrateur = (unsigned short int)atoi(jeton);
+                    break;
+                case 10:
+                    u.Interdit = (unsigned short int)atoi(jeton);
+                    break;       
             }
 
             indice_attribut++;
@@ -288,4 +274,43 @@ void free_utilisateurs(){
         free(f.Utilisateurs[i].Pseudo);
     }
     free(f.Utilisateurs);
+}
+
+void basculer_interdiction_utilisateur(UTILISATEUR* u){
+
+    FILE *fichierEntree, *fichierTemporaire;
+    char ligne[MAX_LINE_LENGTH]; 
+
+    fichierEntree = fopen("utilisateurs.txt", "r");
+
+    if (fichierEntree == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        exit(EXIT_FAILURE);
+    }
+
+    fichierTemporaire = fopen("fichiertemporaire.txt", "w");
+
+    if (fichierTemporaire == NULL){
+        perror("Erreur lors de l'ouverture du fichier temporaire");
+        fclose(fichierEntree);
+        exit(EXIT_FAILURE);
+    }
+
+    unsigned int nombre_lignes = 0;
+    while (fgets(ligne, sizeof(ligne), fichierEntree) != NULL) {
+        if(nombre_lignes == u->Numero_inscription){
+            if(u->Interdit) ligne[strlen(ligne)-2] = '0';
+            else ligne[strlen(ligne)-2] = '1';
+        }
+        fprintf(fichierTemporaire, "%s", ligne);
+        nombre_lignes++;
+    }
+
+    u->Interdit = !(u->Interdit);
+
+    fclose(fichierEntree);
+    fclose(fichierTemporaire);
+
+    remove("utilisateurs.txt");
+    rename("fichiertemporaire.txt", "utilisateurs.txt");
 }

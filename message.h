@@ -8,7 +8,7 @@ typedef struct{
     Liste Messages; 
     Date Date_de_poste;
     unsigned short int question; // 1 si le message est question | 0 si le message est reponse
-    unsigned int Numero_incription;
+    unsigned int Numero_inscription;
 }MESSAGE;
 
 typedef struct Noeud_message{

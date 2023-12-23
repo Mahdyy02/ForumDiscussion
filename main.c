@@ -5,6 +5,8 @@
 
 #define MAX_STRING_LENGTH 100
 
+int main();
+
 void Menu_message(Liste_message* LM, RUBRIQUE *r){
         while(1){
 
@@ -104,7 +106,7 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
             exit(EXIT_SUCCESS);            
         }
         default:
-            printf("Votre choix est invalide.\n");
+            if(choix != 3) printf("Votre choix est invalide.\n");
             break;
         }
 
@@ -182,7 +184,7 @@ void Menu_rubrique(RUBRIQUE *r){
             }
 
             default:
-                printf("Votre choix est invalide.\n");
+                if(choix != 3) printf("Votre choix est invalide.\n");
                 break;
 
         }
@@ -271,11 +273,11 @@ void Menu_rubriques(){
                 break;
             }
             default:
-                printf("Votre choix est invalide\n");
+                if(choix != 3) printf("Votre choix est invalide\n");
                 break;
         }
 
-        if(choix == 3) break;
+        if(choix == 3) main();
     
     }
 }
@@ -352,12 +354,100 @@ void Menu_administrateur(){
         
         switch (choix){
         case 1:{
-            /* code */
+            for(unsigned int i = 0; i < f.Nombre_utilisateurs; i++){
+                if (f.Utilisateurs[i].Numero_inscription == u.Numero_inscription) printf("%i. %s (Vous)\n", i+1, f.Utilisateurs[i].Pseudo); 
+                else printf("%i. %s\n", i+1, f.Utilisateurs[i].Pseudo);
+            }    
+            printf("%i. Retour vers le menu precedant\n", f.Nombre_utilisateurs+2);
+            printf("%i. Quitter\n", f.Nombre_utilisateurs+3);
+            
+            unsigned int sous_choix;
+            printf("Donnez le choix: "); scanf("%i", &sous_choix);
+            while(getchar() != '\n');
+
+            if(sous_choix == f.Nombre_utilisateurs+2) break;
+            if(sous_choix == f.Nombre_utilisateurs+3){
+                detruire_liste_rubrique(&f.Rubriques);
+                free_utilisateurs();
+                exit(EXIT_SUCCESS);
+            }
+            if(sous_choix > 0 && sous_choix <= f.Nombre_utilisateurs+1){
+                affichage(f.Utilisateurs[sous_choix-1]);
+
+                printf("1. Voir tout les messages de %s(%i)\n", f.Utilisateurs[sous_choix-1].Pseudo, f.Utilisateurs[sous_choix-1].Numero_inscription);
+                if(!f.Utilisateurs[sous_choix-1].Interdit) printf("2. Interdire %s(%i)\n", f.Utilisateurs[sous_choix-1].Pseudo, f.Utilisateurs[sous_choix-1].Numero_inscription);
+                else printf("2. Desinterdire %s(%i)\n", f.Utilisateurs[sous_choix-1].Pseudo, f.Utilisateurs[sous_choix-1].Numero_inscription);
+                printf("3. Retour vers le menu precedant\n");
+                printf("4. Quitter\n");
+
+                unsigned short int sous_sous_choix;
+                printf("Donnez votre choix: "); scanf("%hu", &sous_sous_choix);
+                while(getchar() != '\n');
+
+                if(sous_sous_choix == 3) break;
+
+                switch (sous_sous_choix){
+                case 1:{
+                    voir_messages_utilisateur(&f.Utilisateurs[sous_choix-1]);
+                    break;
+                }
+                case 2:{
+                    basculer_interdiction_utilisateur(&f.Utilisateurs[sous_choix-1]);
+                    break;
+                }
+                case 3:{
+                    detruire_liste_rubrique(&f.Rubriques);
+                    free_utilisateurs();
+                    exit(EXIT_SUCCESS);
+                    break;
+                } 
+                default:
+                    if(sous_sous_choix != 3) printf("Votre choix est invalide\n");
+                    break;
+                }
+
+            }else printf("Votre choix est invalide\n");
+
             break;
         }
         case 2:{
-            /* code */
+
+            Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
+            unsigned int nombre_rubriques = 1;
+            while(iter_rubrique != NULL){
+                printf("%i. %s\n",nombre_rubriques ,iter_rubrique->valeur.Theme);
+                nombre_rubriques++;
+                iter_rubrique = iter_rubrique->Suivant;
+            }
+
+            printf("%i. Retour vers le menu précédant\n", nombre_rubriques);
+            printf("%i. Quitter\n", nombre_rubriques+1);
+
+            unsigned int sous_choix;
+            printf("Donnez votre choix: "); scanf("%u", &sous_choix);
+
+            while(getchar() != '\n');
+
+            if(sous_choix == nombre_rubriques) break;
+            if(sous_choix == nombre_rubriques+1){
+                detruire_liste_rubrique(&f.Rubriques);
+                free_utilisateurs();
+                exit(EXIT_SUCCESS);
+            }
+
+            if(sous_choix > 0 && sous_choix < nombre_rubriques){
+                printf("\n\n********************************************************\n");
+                Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
+                for(unsigned int i = 1; i < sous_choix; i++){
+                    iter_rubrique = iter_rubrique->Suivant;
+                }
+                affichage_rubrique(iter_rubrique->valeur);
+
+                // ajouter la possiblité d'effacer une rubrique
+
+            }else printf("Votre choix est invalide\n");
             break;
+            
         }
         case 3:{
             /* code */
@@ -372,7 +462,7 @@ void Menu_administrateur(){
             break;
         }
         default:
-            printf("Votre choix est invalide.\n");
+            if(choix != 5) printf("Votre choix est invalide.\n");
             break;
         }
 
@@ -453,7 +543,8 @@ int main(){
 
                 if(u.Adresse_email != NULL){
                     if(u.Administrateur) Menu_administrateur();
-                    else Menu_rubriques();
+                    else if(!u.Interdit) Menu_rubriques();
+                    else printf("Vous etes interdits par les adminisrateurs\n");
                 }
                 else if(!mot_de_passe_incorrect) printf("Vous n'êtes pas inscrits.\n");
         
