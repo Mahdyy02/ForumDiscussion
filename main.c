@@ -255,7 +255,7 @@ void Menu_rubriques(){
                         }
                         affichage_rubrique(iter_rubrique->valeur);
                         printf("\n");
-                        Menu_rubrique(&iter_rubrique->valeur);
+                        if(!iter_rubrique->valeur.Supprime) Menu_rubrique(&iter_rubrique->valeur);
                     }else printf("Votre choix est invalide\n");
                 }
                 break;
@@ -442,8 +442,38 @@ void Menu_administrateur(){
                     iter_rubrique = iter_rubrique->Suivant;
                 }
                 affichage_rubrique(iter_rubrique->valeur);
+                printf("********************************************************\n\n");
 
-                // ajouter la possiblité d'effacer une rubrique
+                if(!iter_rubrique->valeur.Supprime) printf("1. Supprimer la rubrique\n");
+                else printf("\n1. Instaurer la rubrique\n");
+                printf("2. Voir les utilisateurs qui postent dans %s\n", iter_rubrique->valeur.Theme);
+                printf("3. Retour vers le menu précédant\n");
+                printf("4. Quitter\n");
+
+                unsigned short int sous_sous_choix;
+                printf("Donnez votre choix: "); scanf("%hu", &sous_sous_choix);
+                while(getchar() != '\n');
+
+                if(sous_sous_choix == 3) break;
+
+                switch(sous_sous_choix){
+                case 1:{
+                    basculer_supression_rubrique(&iter_rubrique->valeur);
+                    break;
+                }
+                case 2:{
+                    afficher_utilisateurs_rubrique(&iter_rubrique->valeur);
+                    break;
+                }                
+                case 4:{
+                    detruire_liste_rubrique(&f.Rubriques);
+                    free_utilisateurs();
+                    exit(EXIT_SUCCESS);                    
+                }
+                default:
+                    if(sous_choix != 3) printf("Votre choix est invalide\n");
+                    break;
+                }
 
             }else printf("Votre choix est invalide\n");
             break;
@@ -458,7 +488,9 @@ void Menu_administrateur(){
             break;
         }
         case 6:{
-            /* code */
+            detruire_liste_rubrique(&f.Rubriques);
+            free_utilisateurs();
+            exit(EXIT_SUCCESS);
             break;
         }
         default:

@@ -159,6 +159,8 @@ void charger_rubrique(RUBRIQUE* r) {
                             r->Date_de_poste = charger_date(chaine_a_lire);
                         }else if(strcmp(nom_de_chaine_a_lire ,"Supprimé") == 0){
                             r->Supprime = (unsigned short int)atoi(chaine_a_lire);
+                        }else if(strcmp(nom_de_chaine_a_lire ,"Theme") == 0){
+                            r->Theme = strdup(chaine_a_lire);
                         }else{
                             ajouter_element(&r->Sites_internet, chaine_a_lire);
                         }
@@ -361,4 +363,26 @@ void basculer_supression_rubrique(RUBRIQUE *r){
     remove(rep_fichier);
     rename("fichiertemporaire.txt", rep_fichier);
     
+}
+
+void afficher_utilisateurs_rubrique(RUBRIQUE* r){
+    Noeud_liste_de_message *iter_messages = r->Listes_messages.tete;
+    printf("\n");
+    unsigned int nombres_utilisateurs = 1;
+    unsigned int numero_inscription_utilisateur_precedant;
+    if(iter_messages!=NULL){
+        numero_inscription_utilisateur_precedant = iter_messages->Valeur.tete->Valeur.Numero_inscription;
+        printf("%i. %s(%i)\n", nombres_utilisateurs++, f.Utilisateurs[numero_inscription_utilisateur_precedant].Pseudo, numero_inscription_utilisateur_precedant);
+    }else return;
+    while(iter_messages!=NULL){
+        Noeud_message *iter_message = iter_messages->Valeur.tete;
+        while(iter_message != NULL){
+            if (iter_message->Valeur.Numero_inscription > numero_inscription_utilisateur_precedant){
+                printf("%i. %s(%i)\n", nombres_utilisateurs++, f.Utilisateurs[iter_message->Valeur.Numero_inscription].Pseudo, iter_message->Valeur.Numero_inscription);
+                numero_inscription_utilisateur_precedant = iter_message->Valeur.Numero_inscription;
+            }    
+            iter_message = iter_message->Suivant;
+        }
+        iter_messages = iter_messages->Suivant;
+    }
 }

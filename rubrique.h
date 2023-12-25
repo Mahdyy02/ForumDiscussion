@@ -47,5 +47,6 @@ void ajouter_liste_de_message(Liste_de_liste_de_message*, Liste_message);
 void basculer_supression_message(RUBRIQUE* r, Liste_message LM, MESSAGE* m);
 unsigned int indice_message_dans_liste_message(Liste_message, MESSAGE*);
 void basculer_supression_rubrique(RUBRIQUE*);
+void afficher_utilisateurs_rubrique(RUBRIQUE*);
 
 #endif
