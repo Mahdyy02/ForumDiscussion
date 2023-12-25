@@ -56,6 +56,23 @@ void saisir_rubrique(RUBRIQUE* r){
 
 void affichage_rubrique(RUBRIQUE r){
 
+    unsigned int nombre_messages_rubriques = 0;
+    unsigned int taille_messages = 0;
+    Noeud_liste_de_message *iter_messages = r.Listes_messages.tete;
+    while(iter_messages!=NULL){
+        Noeud_message *iter_message = iter_messages->Valeur.tete;
+        while(iter_message != NULL){
+            Noeud *iter_text = iter_message->Valeur.Messages.tete;
+            while(iter_text != NULL){
+                taille_messages+=strlen(iter_text->Valeur);
+                iter_text = iter_text->Suivant;
+            }
+            nombre_messages_rubriques++;
+            iter_message = iter_message->Suivant;
+        }
+        iter_messages = iter_messages->Suivant;
+    }
+
     if(r.Supprime){
         printf("\n*Rubrique est supprimée par les administrateurs.*\n\n");
         if (!u.Administrateur) return;
@@ -64,6 +81,8 @@ void affichage_rubrique(RUBRIQUE r){
     printf("Theme: %s\n", r.Theme);
     if(!f.Utilisateurs[r.Numero_inscription].Interdit || u.Administrateur) printf("Auteur: %s\n", f.Utilisateurs[r.Numero_inscription].Pseudo);
     else printf("Auteur: Cet utilisateur est interdit\n");
+    if(u.Administrateur) printf("Nombre de messages dans cette rubrique: %i\n", nombre_messages_rubriques);
+    if(u.Administrateur) printf("Taille moyenne des messages dans cette rubrique: %.2f\n", (float)taille_messages/nombre_messages_rubriques);
     printf("Date de poste: %i/%i/%i\n", r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
     
     Noeud *iter = r.Sites_internet.tete;

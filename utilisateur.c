@@ -157,6 +157,7 @@ void affichage(UTILISATEUR u){
     Date date_premier_message = {-1,-1,-1};
     Date date_dernier_message = {-1,-1,-1};
     unsigned int nombre_de_messages = 0;
+    unsigned int nombre_de_messages_aujourdhui = 0;
     Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
     while(iter_rubriques != NULL){
         Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
@@ -165,6 +166,10 @@ void affichage(UTILISATEUR u){
             while(iter_message != NULL){
                 if(iter_message->Valeur.Numero_inscription == u.Numero_inscription){ 
                     nombre_de_messages++;
+
+                    if(iter_message->Valeur.Date_de_poste.jour == date_actuelle().jour && iter_message->Valeur.Date_de_poste.mois == date_actuelle().mois && iter_message->Valeur.Date_de_poste.annee == date_actuelle().annee)
+                        nombre_de_messages_aujourdhui++;
+
                     if(date_dernier_message.jour == -1){
                         date_dernier_message.jour = iter_message->Valeur.Date_de_poste.jour;
                         date_dernier_message.mois = iter_message->Valeur.Date_de_poste.mois;
@@ -212,7 +217,9 @@ void affichage(UTILISATEUR u){
         iter_rubriques = iter_rubriques->Suivant;
     }
 
-    printf("\n\n\n\n\n");
+    unsigned int jours_dans_le_forum = 1 + date_actuelle().jour - date_premier_message.jour + 30*(date_actuelle().mois - date_premier_message.mois) + 365*(date_actuelle().annee - date_premier_message.annee);
+
+    printf("\n");
     printf("********************************************************\n");
     printf("*                                                      *\n");
     printf("*                 Profil de %s                  *\n", u.Pseudo);
@@ -222,12 +229,15 @@ void affichage(UTILISATEUR u){
     printf("Nom: %s\n", u.Nom);
     printf("Prénom: %s\n", u.Prenom);
     printf("Adresse: %s\n", u.Adresse);
-    printf("Nombre de messages: %i\n", nombre_de_messages);
+    printf("Nombre de messages total: %i\n", nombre_de_messages);
+    printf("Nombre de messages aujourdh'hui: %i\n", nombre_de_messages_aujourdhui);
     printf("Date du premier message: %i/%i/%i\n", date_premier_message.jour, date_premier_message.mois, date_premier_message.annee);
     printf("Date du dernier message: %i/%i/%i\n", date_dernier_message.jour, date_dernier_message.mois, date_dernier_message.annee);
+    printf("Moyenne des messages par jours: %.2f\n", (float)nombre_de_messages/jours_dans_le_forum);
     printf("Date de naissance: %i/%i/%i\n", u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee);
     printf("Numéro de télèphone: %u\n",u.Numero_telephone);
     printf("Adresse e-mail: %s\n",u.Adresse_email);
+    printf("\n");
 }
 
 
