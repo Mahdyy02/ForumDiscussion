@@ -1,4 +1,4 @@
-Mohamed;Mahdi;Tunis, Manar;26/11/2002;56177111;0;mohamed.mahdi@gmail.com;Hack_me@@@@@@@@;Mahdy;1;1
+Mohamed;Mahdi;Tunis, Manar;26/11/2002;56177111;0;mohamed.mahdi@gmail.com;Hack_me@@@@@@@@;Mahdy;1;0
 Selim;Sallemi;Sfax;1/1/2000;20696969;1;sallemi.selim@gmail.com;Hacker@@@@@@@@@@@@@;Slouma;0;0
 Nouha;Hammami;Tunis, Manar 1;9/11/2002;95111011;2;nouha@gmail.utm.tn;Hack_mee@@@@@@@@;Mezyeena;0;0
 Moez;Hsan;Ariana;1/1/1982;20000000;3;moez.hsan@est.tn;Maysa12345;Zouzou;0;0
