@@ -28,5 +28,6 @@ void initialiser_liste_de_messages(Liste_message*);
 void ajouter_message(Liste_message*, MESSAGE);
 void retirer_message(Liste_message*);
 void detruire_liste_de_message(Liste_message*);
+void afficher_messages_jour();
 
 #endif

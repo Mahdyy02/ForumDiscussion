@@ -614,3 +614,25 @@ void basculer_supression_message(RUBRIQUE* r, Liste_message LM, MESSAGE* m){
     rename("fichiertemporaire.txt", rep_fichier);
 
 }
+
+void afficher_messages_jour(){
+    
+    printf("\n");
+    Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
+    while(iter_rubriques != NULL){
+        Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
+        while(iter_messages!=NULL){
+            Noeud_message *iter_message = iter_messages->Valeur.tete;
+            while(iter_message != NULL){
+                if(iter_message->Valeur.Date_de_poste.annee == date_actuelle().annee && iter_message->Valeur.Date_de_poste.mois == date_actuelle().mois && iter_message->Valeur.Date_de_poste.jour == date_actuelle().jour)
+                    if(iter_message->Valeur.Question)
+                        affichage_message(iter_message->Valeur);
+                iter_message = iter_message->Suivant;
+            }
+            iter_messages = iter_messages->Suivant;
+        }
+        iter_rubriques = iter_rubriques->Suivant;
+    }
+    printf("\n");
+
+}

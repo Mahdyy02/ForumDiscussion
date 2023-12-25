@@ -202,10 +202,11 @@ void Menu_rubriques(){
         printf("*                                                      *\n");
         printf("********************************************************\n");
     
-        printf("1. Voir les rubriques\n");
-        printf("2. Ajouter une rubrique\n");
-        printf("3. Se deconnecter\n");
-        printf("4. Quitter\n");
+        printf("1. Voir les messages du jour\n");
+        printf("2. Voir les rubriques\n");
+        printf("3. Ajouter une rubrique\n");
+        printf("4. Se deconnecter\n");
+        printf("5. Quitter\n");
 
         unsigned short int choix;
         printf("Donnez votre choix: "); scanf("%hu", &choix);
@@ -215,6 +216,10 @@ void Menu_rubriques(){
         switch(choix){
 
             case 1:{
+                afficher_messages_jour();
+                break;
+            }
+            case 2:{
                 while(1){
                 
                     printf("\n********************************************************\n");
@@ -260,24 +265,24 @@ void Menu_rubriques(){
                 }
                 break;
             }
-            case 2:{
+            case 3:{
                 RUBRIQUE r;
                 saisir_rubrique(&r);
                 Menu_rubrique(&r);
                 break;
             }
-            case 4:{
+            case 5:{
                 free_utilisateurs();
                 detruire_liste_rubrique(&f.Rubriques);
                 exit(EXIT_SUCCESS);
                 break;
             }
             default:
-                if(choix != 3) printf("Votre choix est invalide\n");
+                if(choix != 4) printf("Votre choix est invalide\n");
                 break;
         }
 
-        if(choix == 3) main();
+        if(choix == 4) main();
     
     }
 }
