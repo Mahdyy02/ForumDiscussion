@@ -154,6 +154,64 @@ void inscription(UTILISATEUR* u){
 
 void affichage(UTILISATEUR u){
 
+    Date date_premier_message = {-1,-1,-1};
+    Date date_dernier_message = {-1,-1,-1};
+    unsigned int nombre_de_messages = 0;
+    Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
+    while(iter_rubriques != NULL){
+        Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
+        while(iter_messages!=NULL){
+            Noeud_message *iter_message = iter_messages->Valeur.tete;
+            while(iter_message != NULL){
+                if(iter_message->Valeur.Numero_inscription == u.Numero_inscription){ 
+                    nombre_de_messages++;
+                    if(date_dernier_message.jour == -1){
+                        date_dernier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                        date_dernier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                        date_dernier_message.annee = iter_message->Valeur.Date_de_poste.annee;
+                    }else{
+                        if(date_dernier_message.annee < iter_message->Valeur.Date_de_poste.annee){
+                            date_dernier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                            date_dernier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                            date_dernier_message.annee = iter_message->Valeur.Date_de_poste.annee;
+                        }else if(date_dernier_message.annee == iter_message->Valeur.Date_de_poste.annee && date_dernier_message.mois < iter_message->Valeur.Date_de_poste.mois){
+                            date_dernier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                            date_dernier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                            date_dernier_message.annee = iter_message->Valeur.Date_de_poste.annee;                            
+                        }else if(date_dernier_message.annee == iter_message->Valeur.Date_de_poste.annee && date_dernier_message.mois == iter_message->Valeur.Date_de_poste.mois && date_dernier_message.jour < iter_message->Valeur.Date_de_poste.jour){
+                            date_dernier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                            date_dernier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                            date_dernier_message.annee = iter_message->Valeur.Date_de_poste.annee;  
+                        }
+                    }
+
+                    if(date_premier_message.jour == -1){
+                        date_premier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                        date_premier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                        date_premier_message.annee = iter_message->Valeur.Date_de_poste.annee;
+                    }else{
+                        if(date_premier_message.annee > iter_message->Valeur.Date_de_poste.annee){
+                            date_premier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                            date_premier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                            date_premier_message.annee = iter_message->Valeur.Date_de_poste.annee;
+                        }else if(date_premier_message.annee == iter_message->Valeur.Date_de_poste.annee && date_premier_message.mois > iter_message->Valeur.Date_de_poste.mois){
+                            date_premier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                            date_premier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                            date_premier_message.annee = iter_message->Valeur.Date_de_poste.annee;                            
+                        }else if(date_premier_message.annee == iter_message->Valeur.Date_de_poste.annee && date_premier_message.mois == iter_message->Valeur.Date_de_poste.mois && date_premier_message.jour > iter_message->Valeur.Date_de_poste.jour){
+                            date_premier_message.jour = iter_message->Valeur.Date_de_poste.jour;
+                            date_premier_message.mois = iter_message->Valeur.Date_de_poste.mois;
+                            date_premier_message.annee = iter_message->Valeur.Date_de_poste.annee;  
+                        }
+                    }
+                }    
+                iter_message = iter_message->Suivant;
+            }
+            iter_messages = iter_messages->Suivant;
+        }
+        iter_rubriques = iter_rubriques->Suivant;
+    }
+
     printf("\n\n\n\n\n");
     printf("********************************************************\n");
     printf("*                                                      *\n");
@@ -161,12 +219,15 @@ void affichage(UTILISATEUR u){
     printf("*                                                      *\n");
     printf("********************************************************\n");
 
-    printf("le nom est: %s\n", u.Nom);
-    printf("le prénom est: %s\n",u.Prenom);
-    printf("l'adresse est: %s\n",u.Adresse);
-    printf("la date de naissance est: %i/%i/%i\n",u.Date_de_naissance.jour,u.Date_de_naissance.mois,u.Date_de_naissance.annee);
-    printf("le numéro de téléphone est: %u\n",u.Numero_telephone);
-    printf("l'adresse e-mail est: %s\n",u.Adresse_email);
+    printf("Nom: %s\n", u.Nom);
+    printf("Prénom: %s\n", u.Prenom);
+    printf("Adresse: %s\n", u.Adresse);
+    printf("Nombre de messages: %i\n", nombre_de_messages);
+    printf("Date du premier message: %i/%i/%i\n", date_premier_message.jour, date_premier_message.mois, date_premier_message.annee);
+    printf("Date du dernier message: %i/%i/%i\n", date_dernier_message.jour, date_dernier_message.mois, date_dernier_message.annee);
+    printf("Date de naissance: %i/%i/%i\n", u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee);
+    printf("Numéro de télèphone: %u\n",u.Numero_telephone);
+    printf("Adresse e-mail: %s\n",u.Adresse_email);
 }
 
 
