@@ -15,7 +15,8 @@ void saisir_message(MESSAGE* m, MESSAGE* reponse, unsigned short int question){
 
     m->Numero_inscription = u.Numero_inscription;
     m->Date_de_poste = date_actuelle();
-    m->question = question;
+    m->Question = question;
+    m->Supprime = 0;
     initialiser_liste(&m->Messages);
     if(question) reponse = NULL;
 
@@ -64,12 +65,15 @@ void saisir_message(MESSAGE* m, MESSAGE* reponse, unsigned short int question){
 
 void affichage_message(MESSAGE m){
 
-    if(f.Utilisateurs[m.Numero_inscription].Interdit) return;
+    if(f.Utilisateurs[m.Numero_inscription].Interdit || m.Supprime){
+        printf("\n*Message est supprimé par les administrateurs.*\n\n");
+        if (!u.Administrateur) return;
+    };
 
     printf("Titre: %s\n", m.Titre);
     printf("Auteur: %s\n", f.Utilisateurs[m.Numero_inscription].Pseudo);
 
-    if(m.question) printf("Type: Question\n");
+    if(m.Question) printf("Type: Question\n");
     else printf("Type: Réponse\n");
         
     Noeud *iter = m.Messages.tete;
@@ -92,7 +96,7 @@ void affichage_message(MESSAGE m){
 void repondre_messsage_anonyme(MESSAGE m, RUBRIQUE r){
 
     MESSAGE reponse;
-    reponse.question = 1;
+    reponse.Question = 1;
     reponse.Titre = strdup(m.Titre);
     reponse.Date_de_poste = m.Date_de_poste;
 
@@ -226,7 +230,7 @@ void sauvegarder_message(MESSAGE m, MESSAGE *rm, RUBRIQUE r){
             exit(EXIT_FAILURE);
         }
 
-    }else if(m.question){
+    }else if(m.Question){
 
         Noeud_rubrique *iter = f.Rubriques.tete;
         while(iter != NULL){
@@ -265,9 +269,10 @@ void sauvegarder_message(MESSAGE m, MESSAGE *rm, RUBRIQUE r){
         }
 
         fprintf(Fichier_messages, "Numero d'inscription: %i\n", m.Numero_inscription);
+        fprintf(Fichier_messages, "Supprimé: %i\n", m.Supprime);
         fprintf(Fichier_messages, "Titre: %s\n", m.Titre);
         fprintf(Fichier_messages, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
-        fprintf(Fichier_messages, "Type: %i\n", m.question);
+        fprintf(Fichier_messages, "Type: %i\n", m.Question);
 
         if(m.Messages.tete == NULL){
             printf("Erreur: le message n'admet pas de texte.\n");
@@ -362,9 +367,10 @@ void sauvegarder_message(MESSAGE m, MESSAGE *rm, RUBRIQUE r){
                     fprintf(fichierTemporaire, "%s", ligne);
 
                     fprintf(fichierTemporaire, "Numero d'inscription: %i\n", m.Numero_inscription);
+                    fprintf(fichierTemporaire, "Supprimé: %i\n", m.Supprime);
                     fprintf(fichierTemporaire, "Titre: %s\n", m.Titre);
                     fprintf(fichierTemporaire, "Date de poste: %i/%i/%i\n", m.Date_de_poste.jour, m.Date_de_poste.mois, m.Date_de_poste.annee);
-                    fprintf(fichierTemporaire, "Type: %i\n", m.question);
+                    fprintf(fichierTemporaire, "Type: %i\n", m.Question);
 
                     if(m.Messages.tete == NULL){
                         printf("Erreur: le message n'admet pas de texte.\n");
@@ -512,10 +518,12 @@ Liste_message charger_message(char* rep_message){
             m.Numero_inscription = atoi(chaine_a_lire);
         }else if(strcmp(nom_de_chaine_a_lire, "Titre") == 0){
             m.Titre = strdup(chaine_a_lire);
-        }else if(strcmp(nom_de_chaine_a_lire ,"Date de poste") == 0){
+        }else if(strcmp(nom_de_chaine_a_lire, "Date de poste") == 0){
             m.Date_de_poste = charger_date(chaine_a_lire);
-        }else if(strcmp(nom_de_chaine_a_lire ,"Type") == 0){
-            m.question = atoi(chaine_a_lire);
+        }else if(strcmp(nom_de_chaine_a_lire, "Type") == 0){
+            m.Question = atoi(chaine_a_lire);
+        }else if(strcmp(nom_de_chaine_a_lire, "Supprimé") == 0){
+            m.Supprime = atoi(chaine_a_lire);
         }else{
             
             if(line[1] != '=' && line[0] != '\0'){
@@ -524,9 +532,7 @@ Liste_message charger_message(char* rep_message){
                 ajouter_message(&LM, m);
                 initialiser_liste(&m.Messages);
             }
-
         }
-
     }
     
     fclose(Fichier_messages);
@@ -548,4 +554,63 @@ void voir_messages_utilisateur(UTILISATEUR* u){
         }
         iter_rubriques = iter_rubriques->Suivant;
     }
+}
+
+unsigned int indice_message_dans_liste_message(Liste_message LM, MESSAGE *m){
+
+    Noeud_message *iter_message = LM.tete;
+    unsigned int indice_message = -1;
+    while(iter_message != NULL){
+        indice_message++;
+        if(strcmp(m->Messages.tete->Valeur, iter_message->Valeur.Messages.tete->Valeur) == 0) return indice_message;
+        iter_message = iter_message->Suivant;
+    }
+
+    return -1;
+}
+
+void basculer_supression_message(RUBRIQUE* r, Liste_message LM, MESSAGE* m){
+    
+    char *rep_fichier = strdup(r->Theme);
+    rep_fichier = (char*)realloc(rep_fichier, (strlen("../Rubriques//_.txt")+ 2*strlen(r->Theme) + strlen(m->Titre) + 1)*sizeof(char));
+    snprintf(rep_fichier, MAX_LINE_LENGTH, "../Rubriques/%s/%s_%s.txt", r->Theme, r->Theme, m->Titre);
+
+    FILE *fichierEntree, *fichierTemporaire;
+    char ligne[MAX_LINE_LENGTH]; 
+
+    fichierEntree = fopen(rep_fichier, "r");
+
+    if (fichierEntree == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        exit(EXIT_FAILURE);
+    }
+
+    fichierTemporaire = fopen("fichiertemporaire.txt", "w");
+
+    if (fichierTemporaire == NULL){
+        perror("Erreur lors de l'ouverture du fichier temporaire");
+        fclose(fichierEntree);
+        exit(EXIT_FAILURE);
+    }
+
+    unsigned int indice_message = 0;
+    while (fgets(ligne, sizeof(ligne), fichierEntree) != NULL){
+        if(indice_message == indice_message_dans_liste_message(LM, m)){
+            if(strstr(ligne, "Supprimé") != NULL){
+                if(m->Supprime) ligne[strlen(ligne)-2] = '0';
+                else ligne[strlen(ligne)-2] = '1';
+            }
+        }
+        if(ligne[1] == '=') indice_message++;
+        fprintf(fichierTemporaire, "%s", ligne);
+    }
+
+    m->Supprime = !m->Supprime;
+
+    fclose(fichierEntree);
+    fclose(fichierTemporaire);
+
+    remove(rep_fichier);
+    rename("fichiertemporaire.txt", rep_fichier);
+
 }

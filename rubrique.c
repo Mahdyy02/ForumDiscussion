@@ -15,6 +15,7 @@ void saisir_rubrique(RUBRIQUE* r){
 
     r->Numero_inscription = u.Numero_inscription;
     r->Date_de_poste = date_actuelle();
+    r->Supprime = 0;
     initialiser_liste_de_liste_de_message(&r->Listes_messages);
     
     while(1){
@@ -55,8 +56,15 @@ void saisir_rubrique(RUBRIQUE* r){
 
 void affichage_rubrique(RUBRIQUE r){
 
-    printf("Le theme du rubrique est: %s\n",r.Theme);
-    printf("La date de poste du rubrique est: %i/%i/%i\n",r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
+    if(r.Supprime){
+        printf("\n*Rubrique est supprimée par les administrateurs.*\n\n");
+        if (!u.Administrateur) return;
+    };
+
+    printf("Theme: %s\n", r.Theme);
+    if(!f.Utilisateurs[r.Numero_inscription].Interdit || u.Administrateur) printf("Auteur: %s\n", f.Utilisateurs[r.Numero_inscription].Pseudo);
+    else printf("Auteur: Cet utilisateur est interdit\n");
+    printf("Date de poste: %i/%i/%i\n", r.Date_de_poste.jour ,r.Date_de_poste.mois, r.Date_de_poste.annee);
     
     Noeud *iter = r.Sites_internet.tete;
     for(int i = 0; iter != NULL; i++){
@@ -146,9 +154,11 @@ void charger_rubrique(RUBRIQUE* r) {
                         chaine_a_lire[size-1] = '\0';
 
                         if(strcmp(nom_de_chaine_a_lire, "Numero d'inscription") == 0){
-                            r->Numero_inscription = atoi(chaine_a_lire);
+                            r->Numero_inscription = (unsigned int)atoi(chaine_a_lire);
                         }else if(strcmp(nom_de_chaine_a_lire ,"Date de poste") == 0){
                             r->Date_de_poste = charger_date(chaine_a_lire);
+                        }else if(strcmp(nom_de_chaine_a_lire ,"Supprimé") == 0){
+                            r->Supprime = (unsigned short int)atoi(chaine_a_lire);
                         }else{
                             ajouter_element(&r->Sites_internet, chaine_a_lire);
                         }
@@ -197,6 +207,7 @@ void sauvegarder_rubrique(RUBRIQUE r){
     }
 
     fprintf(Fichier_rubrique,"Theme: %s\n", r.Theme);
+    fprintf(Fichier_rubrique, "Supprimé: %i\n", r.Supprime);
     fprintf(Fichier_rubrique,"Date de poste: %i/%i/%i\n", r.Date_de_poste.jour, r.Date_de_poste.mois, r.Date_de_poste.annee);
     fprintf(Fichier_rubrique,"Numero d'inscription: %i\n", r.Numero_inscription);
 
@@ -308,4 +319,46 @@ unsigned int nombre_rubriques(){
 
     return nr;
 
+}
+
+void basculer_supression_rubrique(RUBRIQUE *r){
+    
+    char *rep_fichier = strdup(r->Theme);
+    rep_fichier = (char*)realloc(rep_fichier, (strlen("../Rubriques//.txt")+ 2*strlen(r->Theme) + 1)*sizeof(char));
+    snprintf(rep_fichier, MAX_LINE_LENGTH, "../Rubriques/%s/%s.txt", r->Theme, r->Theme);
+
+    FILE *fichierEntree, *fichierTemporaire;
+    char ligne[MAX_LINE_LENGTH]; 
+
+    fichierEntree = fopen(rep_fichier, "r");
+
+    if (fichierEntree == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        exit(EXIT_FAILURE);
+    }
+
+    fichierTemporaire = fopen("fichiertemporaire.txt", "w");
+
+    if (fichierTemporaire == NULL){
+        perror("Erreur lors de l'ouverture du fichier temporaire");
+        fclose(fichierEntree);
+        exit(EXIT_FAILURE);
+    }
+
+    while (fgets(ligne, sizeof(ligne), fichierEntree) != NULL){
+        if(strstr(ligne, "Supprimé") != NULL){
+            if(r->Supprime) ligne[strlen(ligne)-2] = '0';
+            else ligne[strlen(ligne)-2] = '1';
+        }
+        fprintf(fichierTemporaire, "%s", ligne);
+    }
+
+    r->Supprime = !r->Supprime;
+
+    fclose(fichierEntree);
+    fclose(fichierTemporaire);
+
+    remove(rep_fichier);
+    rename("fichiertemporaire.txt", rep_fichier);
+    
 }

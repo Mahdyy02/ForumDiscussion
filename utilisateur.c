@@ -278,6 +278,21 @@ void free_utilisateurs(){
 
 void basculer_interdiction_utilisateur(UTILISATEUR* u){
 
+    Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
+    while(iter_rubriques != NULL){
+        Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
+        while(iter_messages!=NULL){
+            Noeud_message *iter_message = iter_messages->Valeur.tete;
+            while(iter_message != NULL){
+                if(iter_message->Valeur.Numero_inscription == u->Numero_inscription) 
+                    basculer_supression_message(&iter_rubriques->valeur, iter_messages->Valeur, &iter_message->Valeur);
+                iter_message = iter_message->Suivant;
+            }
+            iter_messages = iter_messages->Suivant;
+        }
+        iter_rubriques = iter_rubriques->Suivant;
+    }
+
     FILE *fichierEntree, *fichierTemporaire;
     char ligne[MAX_LINE_LENGTH]; 
 

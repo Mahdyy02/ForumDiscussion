@@ -41,7 +41,7 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
             unsigned int nombre_questions = 1;
             Noeud_message *iter_message = LM->tete;
             while(iter_message !=NULL){
-                if(iter_message->Valeur.question) printf("%i. %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
+                if(iter_message->Valeur.Question) printf("%i. %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
                 iter_message = iter_message->Suivant;
             }
             printf("%i. Retour vers le menu précedant\n", nombre_questions);
@@ -63,7 +63,7 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
                 unsigned int i = 1;
                 while(i < sous_choix){
                     iter_message = iter_message->Suivant;
-                    if (iter_message->Valeur.question) i++;
+                    if (iter_message->Valeur.Question) i++;
                 }
                 MESSAGE m = iter_message->Valeur;
                 printf("1. Repondre anonymement\n");
@@ -415,7 +415,7 @@ void Menu_administrateur(){
             Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
             unsigned int nombre_rubriques = 1;
             while(iter_rubrique != NULL){
-                printf("%i. %s\n",nombre_rubriques ,iter_rubrique->valeur.Theme);
+                printf("%i. %s\n", nombre_rubriques, iter_rubrique->valeur.Theme);
                 nombre_rubriques++;
                 iter_rubrique = iter_rubrique->Suivant;
             }

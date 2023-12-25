@@ -15,6 +15,7 @@ typedef struct{
     char* Theme;
     Date Date_de_poste;
     unsigned int Numero_inscription;
+    unsigned short int Supprime;
     Liste Sites_internet;
     Liste_de_liste_de_message Listes_messages;
 }RUBRIQUE;
@@ -43,5 +44,8 @@ void detruire_liste_rubrique(Liste_rubrique*);
 void ajouter_rubrique(Liste_rubrique*, RUBRIQUE);
 void initialiser_liste_de_liste_de_message(Liste_de_liste_de_message*);
 void ajouter_liste_de_message(Liste_de_liste_de_message*, Liste_message);
+void basculer_supression_message(RUBRIQUE* r, Liste_message LM, MESSAGE* m);
+unsigned int indice_message_dans_liste_message(Liste_message, MESSAGE*);
+void basculer_supression_rubrique(RUBRIQUE*);
 
 #endif
