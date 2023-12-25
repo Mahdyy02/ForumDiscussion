@@ -1,4 +1,5 @@
 Numero d'inscription: 7
+Supprimé: 0
 Titre: LeProcesenium
 Date de poste: 16/12/2023
 Type: 1
