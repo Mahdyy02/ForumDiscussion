@@ -1,5 +1,5 @@
 Numero d'inscription: 0
-Supprimé: 1
+Supprimé: 0
 Titre: Le_theatre_et_les_machines
 Date de poste: 18/12/2023
 Type: 1

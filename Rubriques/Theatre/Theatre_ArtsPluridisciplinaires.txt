@@ -1,12 +1,12 @@
 Numero d'inscription: 0
-Supprimé: 1
+Supprimé: 0
 Titre: ArtsPluridisciplinaires
 Date de poste: 17/12/2023
 Type: 1
 Message: L'art pluridisciplinaire est ne de la position centrale de l oeuvre artistique
 ========================================================
 Numero d'inscription: 0
-Supprimé: 1
+Supprimé: 0
 Titre: ArtsPluridisciplinaires
 Date de poste: 19/12/2023
 Type: 0
@@ -14,7 +14,7 @@ Message: Merci pour cette tres bonne information
 Reponse anonyme 1: De rien
 ========================================================
 Numero d'inscription: 0
-Supprimé: 1
+Supprimé: 0
 Titre: ArtsPluridisciplinaires
 Date de poste: 19/12/2023
 Type: 1
