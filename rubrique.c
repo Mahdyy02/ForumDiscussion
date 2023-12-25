@@ -385,4 +385,30 @@ void afficher_utilisateurs_rubrique(RUBRIQUE* r){
         }
         iter_messages = iter_messages->Suivant;
     }
+    printf("\n");
+}
+
+void chercher_mot_messages(char* mot_cherche){
+
+    Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
+    while(iter_rubriques != NULL){
+        Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
+        while(iter_messages!=NULL){
+            Noeud_message *iter_message = iter_messages->Valeur.tete;
+            while(iter_message != NULL){
+                Noeud *iter_text = iter_message->Valeur.Messages.tete;
+                while(iter_text != NULL){
+                    if(strstr(iter_text->Valeur, mot_cherche) != NULL){
+                        printf("Rubrique: %s\n", iter_rubriques->valeur.Theme);
+                        affichage_message(iter_message->Valeur);
+                    }
+                    iter_text = iter_text->Suivant;
+                }
+                iter_message = iter_message->Suivant;
+            }
+            iter_messages = iter_messages->Suivant;
+        }
+        iter_rubriques = iter_rubriques->Suivant;
+    }
+
 }

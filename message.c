@@ -523,7 +523,7 @@ Liste_message charger_message(char* rep_message){
         }else if(strcmp(nom_de_chaine_a_lire, "Type") == 0){
             m.Question = atoi(chaine_a_lire);
         }else if(strcmp(nom_de_chaine_a_lire, "Supprimé") == 0){
-            m.Supprime = atoi(chaine_a_lire);
+            m.Supprime = (unsigned short int)atoi(chaine_a_lire);
         }else{
             
             if(line[1] != '=' && line[0] != '\0'){

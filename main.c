@@ -343,14 +343,15 @@ void Menu_administrateur(){
         printf("2. Voir tout les rubriques\n");
         printf("3. Voir les statistiques\n");
         printf("4. Entrer le forum en tant que utilisateur\n");
-        printf("5. Retour vers le menu precedant\n");
-        printf("6. Quitter\n");
+        printf("5. Chercher un mot dans les messages\n");
+        printf("6. Retour vers le menu precedant\n");
+        printf("7. Quitter\n");
 
         unsigned short int choix;
         printf("Donnez le choix: "); scanf("%hu", &choix);
         while(getchar() != '\n');
 
-        if(choix == 5) break;
+        if(choix == 6) break;
         
         switch (choix){
         case 1:{
@@ -487,17 +488,23 @@ void Menu_administrateur(){
             Menu_rubriques();
             break;
         }
-        case 6:{
+        case 5:{
+            char mot_cherche[MAX_STRING_LENGTH];
+            printf("Donnez le mot a cherché: "); fgets(mot_cherche, MAX_STRING_LENGTH, stdin);
+            mot_cherche[strlen(mot_cherche)-1] = '\0';
+            chercher_mot_messages(mot_cherche);
+            break;
+        }
+        case 7:{
             detruire_liste_rubrique(&f.Rubriques);
             free_utilisateurs();
             exit(EXIT_SUCCESS);
             break;
         }
         default:
-            if(choix != 5) printf("Votre choix est invalide.\n");
+            if(choix != 6) printf("Votre choix est invalide.\n");
             break;
         }
-
     }    
 }
 
@@ -592,10 +599,7 @@ int main(){
                 printf("Votre choix est invalide.\n");
                 break;
             }
-
         }
-
     }
-    
     return 0;
 }
