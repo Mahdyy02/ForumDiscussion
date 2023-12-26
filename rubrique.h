@@ -50,5 +50,6 @@ void basculer_supression_rubrique(RUBRIQUE*);
 void afficher_utilisateurs_rubrique(RUBRIQUE*);
 void chercher_mot_messages(char*);
 char* jours_plus_active();
+void modifier_message(RUBRIQUE*, Liste_message*, MESSAGE*);
 
 #endif

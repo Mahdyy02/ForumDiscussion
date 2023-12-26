@@ -16,15 +16,16 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
 
         printf("1. Voir tout les messages\n");
         printf("2. Repondre a une question\n");
-        printf("3. Retour vers le menu des rubriques\n");
-        printf("4. Quitter\n");
+        printf("3. Modifier votre messages\n");
+        printf("4. Retour vers le menu des rubriques\n");
+        printf("5. Quitter\n");
 
         unsigned short int choix;
         printf("Donnez votre choix: "); scanf("%hu", &choix);
 
         while(getchar() != '\n');
 
-        if(choix == 3) break;
+        if(choix == 4) break;
 
         switch (choix){
         case 1:{
@@ -98,13 +99,46 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
 
         break;
         }
-        case 4:{
+        case 3:{
+            unsigned int nombre_questions = 1;
+            Noeud_message *iter_message = LM->tete;
+            while(iter_message !=NULL){
+                if(iter_message->Valeur.Numero_inscription == u.Numero_inscription) printf("%i. %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
+                iter_message = iter_message->Suivant;
+            }
+            printf("%i. Retour vers le menu précedant\n", nombre_questions);
+            printf("%i. Quiter\n", nombre_questions+1);
+
+            unsigned int sous_choix;
+            printf("Donnez votre choix: "); scanf("%u", &sous_choix);
+
+            while(getchar() != '\n');
+
+            if(sous_choix == nombre_questions) break;
+            if(sous_choix == nombre_questions+1){
+                free_utilisateurs();
+                detruire_liste_rubrique(&f.Rubriques);
+                exit(EXIT_SUCCESS);
+            }    
+            if(sous_choix > 0 && sous_choix < nombre_questions){
+                Noeud_message *iter_message = LM->tete;
+                unsigned int i = 1;
+                while(i < sous_choix){
+                    iter_message = iter_message->Suivant;
+                    if (iter_message->Valeur.Numero_inscription == u.Numero_inscription) i++;
+                }
+                affichage_message(iter_message->Valeur);
+                modifier_message(r, LM, &iter_message->Valeur);
+            }
+            break;    
+        }
+        case 5:{
             free_utilisateurs();
             detruire_liste_rubrique(&f.Rubriques);
             exit(EXIT_SUCCESS);            
         }
         default:
-            if(choix != 3) printf("Votre choix est invalide.\n");
+            if(choix != 4) printf("Votre choix est invalide.\n");
             break;
         }
 
@@ -500,7 +534,8 @@ void Menu_administrateur(){
         }
         case 5:{
             char mot_cherche[MAX_STRING_LENGTH];
-            printf("Donnez le mot a cherché: "); fgets(mot_cherche, MAX_STRING_LENGTH, stdin);
+            printf("Donnez le mot a cherché: ");
+            fgets(mot_cherche, MAX_STRING_LENGTH, stdin);
             mot_cherche[strlen(mot_cherche)-1] = '\0';
             chercher_mot_messages(mot_cherche);
             break;

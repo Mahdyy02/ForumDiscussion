@@ -596,7 +596,7 @@ void basculer_supression_message(RUBRIQUE* r, Liste_message LM, MESSAGE* m){
     unsigned int indice_message = 0;
     while (fgets(ligne, sizeof(ligne), fichierEntree) != NULL){
         if(indice_message == indice_message_dans_liste_message(LM, m)){
-            if(strstr(ligne, "Supprimé") != NULL){
+            if(strncmp("Supprimé:", ligne, strlen("Supprimé:")) == 0){
                 if(m->Supprime) ligne[strlen(ligne)-2] = '0';
                 else ligne[strlen(ligne)-2] = '1';
             }
@@ -634,5 +634,58 @@ void afficher_messages_jour(){
         iter_rubriques = iter_rubriques->Suivant;
     }
     printf("\n");
+
+}
+
+void modifier_message(RUBRIQUE *r, Liste_message *LM, MESSAGE* m){
+
+    if (m->Question ) printf("Donnez la nouvelle question: ");
+    else printf("Donnez la nouvelle réponse: ");
+    char nouveau_message[MAX_STRING_LENGTH];
+    fgets(nouveau_message, MAX_STRING_LENGTH, stdin);
+
+    char *rep_fichier = strdup(r->Theme);
+    rep_fichier = (char*)realloc(rep_fichier, (strlen("../Rubriques//_.txt")+ 2*strlen(r->Theme) + strlen(m->Titre) + 1)*sizeof(char));
+    snprintf(rep_fichier, MAX_LINE_LENGTH, "../Rubriques/%s/%s_%s.txt", r->Theme, r->Theme, m->Titre);
+
+    FILE *fichierEntree, *fichierTemporaire;
+    char ligne[MAX_LINE_LENGTH]; 
+
+    fichierEntree = fopen(rep_fichier, "r");
+
+    if (fichierEntree == NULL){
+        perror("Erreur lors de l'ouverture du fichier");
+        exit(EXIT_FAILURE);
+    }
+
+    fichierTemporaire = fopen("fichiertemporaire.txt", "w");
+
+    if (fichierTemporaire == NULL){
+        perror("Erreur lors de l'ouverture du fichier temporaire");
+        fclose(fichierEntree);
+        exit(EXIT_FAILURE);
+    }
+
+    unsigned int indice_message = 0;
+    unsigned short int flag = 0;
+    while (fgets(ligne, sizeof(ligne), fichierEntree) != NULL){
+        if(indice_message == indice_message_dans_liste_message(*LM, m)){
+            if(strstr(ligne, m->Messages.tete->Valeur) != NULL && !flag){
+                flag = 1;
+                snprintf(ligne, MAX_LINE_LENGTH, "Message: %s", nouveau_message);
+            }
+        }
+        if(ligne[1] == '=') indice_message++;
+        fprintf(fichierTemporaire, "%s", ligne);
+    }
+
+    nouveau_message[strlen(nouveau_message)-1] = '\0';
+    snprintf(m->Messages.tete->Valeur, MAX_LINE_LENGTH, "%s", nouveau_message);
+
+    fclose(fichierEntree);
+    fclose(fichierTemporaire);
+
+    remove(rep_fichier);
+    rename("fichiertemporaire.txt", rep_fichier);
 
 }
