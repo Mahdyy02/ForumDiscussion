@@ -5,8 +5,6 @@
 
 #define MAX_STRING_LENGTH 100
 
-int main();
-
 void Menu_message(Liste_message* LM, RUBRIQUE *r){
         while(1){
 
@@ -282,7 +280,7 @@ void Menu_rubriques(){
                 break;
         }
 
-        if(choix == 4) main();
+        if(choix == 4) break;
     
     }
 }
@@ -486,7 +484,14 @@ void Menu_administrateur(){
             
         }
         case 3:{
-            /* code */
+            printf("********************************************************\n");
+            printf("*                                                      *\n");
+            printf("*                     Statistiques                     *\n");
+            printf("*                                                      *\n");
+            printf("********************************************************\n");
+
+            printf("Le jours le plus active est: %s.\n\n", jours_plus_active());
+
             break;
         }
         case 4:{

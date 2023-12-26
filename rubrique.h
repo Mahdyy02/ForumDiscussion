@@ -49,5 +49,6 @@ unsigned int indice_message_dans_liste_message(Liste_message, MESSAGE*);
 void basculer_supression_rubrique(RUBRIQUE*);
 void afficher_utilisateurs_rubrique(RUBRIQUE*);
 void chercher_mot_messages(char*);
+char* jours_plus_active();
 
 #endif

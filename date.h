@@ -11,5 +11,6 @@ typedef struct{
 void Saisir_date(Date *d);
 Date charger_date(char*);
 Date date_actuelle();
+int jour_semaine(Date);
 
 #endif

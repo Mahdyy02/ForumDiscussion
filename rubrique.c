@@ -431,3 +431,64 @@ void chercher_mot_messages(char* mot_cherche){
     }
 
 }
+
+char* jours_plus_active(){
+
+    unsigned int frequences_jours_semaine[] = {0, 0, 0, 0, 0, 0, 0}; 
+
+    Noeud_rubrique *iter_rubriques = f.Rubriques.tete;
+    while(iter_rubriques != NULL){
+        frequences_jours_semaine[jour_semaine(iter_rubriques->valeur.Date_de_poste)]++;
+        Noeud_liste_de_message *iter_messages = iter_rubriques->valeur.Listes_messages.tete;
+        while(iter_messages!=NULL){
+            Noeud_message *iter_message = iter_messages->Valeur.tete;
+            while(iter_message != NULL){
+                frequences_jours_semaine[jour_semaine(iter_message->Valeur.Date_de_poste)]++;
+                iter_message = iter_message->Suivant;
+            }
+            iter_messages = iter_messages->Suivant;
+        }
+        iter_rubriques = iter_rubriques->Suivant;
+
+    }
+
+    printf("D  |  L  |  Ma  |  Me  |  J  |  V  |  S  |\n");
+    for(int i = 0; i < 7; i++) printf("%i  |  ", frequences_jours_semaine[i]);
+        printf("\n");
+
+    unsigned int maximum_frequence = frequences_jours_semaine[0];
+    unsigned int jours_plus_frequent = 0;
+    for (int i = 0; i < 7; i++){
+        if (frequences_jours_semaine[i] > maximum_frequence) {
+            maximum_frequence = frequences_jours_semaine[i];
+            jours_plus_frequent = (unsigned int)i;
+        }
+    }
+
+    switch (jours_plus_frequent){
+        case 0:
+            return "dimanche";
+            break;
+        case 1:
+            return "lundi";
+            break;
+        case 2:
+            return "mardi";
+            break;
+        case 3:
+            return "mercredi";
+            break;
+        case 4:
+            return "jeudi";
+            break;
+        case 5:
+            return "vendredi";
+            break;
+        case 6:
+            return "samedi";
+            break;                    
+        default:
+            return "Erreur";
+            break;
+        }    
+}

@@ -44,7 +44,7 @@ void Saisir_date(Date *d){
                 }
                 printf("Le nombre du jour pour le mois %i doit être compris entre 1 et 31\n", d->mois);    
             }else{
-                if((d->jour) >= 1 & (d->jour) <= 30){
+                if((d->jour) >= 1 && (d->jour) <= 30){
                     break;
                 }
                 printf("Le nombre du jour pour le mois %i doit être compris entre 1 et 30\n", d->mois);    
@@ -86,5 +86,25 @@ Date date_actuelle(){
     d.annee = localTime->tm_year + 1900;
 
     return d;
+
+}
+
+int jour_semaine(Date d){
+
+    int jour = d.jour;
+    int mois = d.mois;
+    int annee = d.annee;
+
+    if (mois < 3) {
+        mois += 12;
+        annee--;
+    }
+
+    int k = annee%100;
+    int j = annee/100;
+
+    int jour_semaine = (jour + 13*(mois+1)/5 + k + k/4 + j/4 - 2*j)%7; // Algorithme de la Congruence de Zeller
+
+    return (jour_semaine + 6)%7;
 
 }
