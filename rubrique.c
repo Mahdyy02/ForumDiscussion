@@ -454,7 +454,7 @@ char* jours_plus_active(){
 
     printf("D  |  L  |  Ma  |  Me  |  J  |  V  |  S  |\n");
     for(int i = 0; i < 7; i++) printf("%i  |  ", frequences_jours_semaine[i]);
-        printf("\n");
+    printf("\n");
 
     unsigned int maximum_frequence = frequences_jours_semaine[0];
     unsigned int jours_plus_frequent = 0;
