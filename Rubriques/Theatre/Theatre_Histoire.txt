@@ -1,0 +1,21 @@
+Numero d'inscription: 5
+Supprimé: 0
+Titre: Histoire
+Date de poste: 25/12/2023
+Type: 1
+Message: La Renaissance a vu le theatre renaitre avec eclat
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: Histoire
+Date de poste: 25/12/2023
+Type: 0
+Message: Des masques grecs aux hologrammes modernes
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: Histoire
+Date de poste: 25/12/2023
+Type: 0
+Message: De ses debuts modestes aux productions elaborees
+========================================================

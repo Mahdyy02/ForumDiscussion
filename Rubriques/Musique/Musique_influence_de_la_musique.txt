@@ -1,0 +1,56 @@
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 1
+Message: La musique a un impact significatif sur notre bien-etre.
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 0
+Message: La musique vit dans le monde numerique
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 0
+Message: La musique est une force puissante dans nos vies
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 0
+Message: La bonne musique peut ameliorer la concentration et la productivite
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 0
+Message: Certaines personnes trouvent le reconfort dans la douce melodie
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 1
+Message: Les epoques classiques ont apporte des symphonies majestueuses
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 0
+Message: Les icones du rock ont electrifie les foules
+========================================================
+Numero d'inscription: 5
+Supprimé: 0
+Titre: influence_de_la_musique
+Date de poste: 25/12/2023
+Type: 0
+Message: Des compositeurs tels que Mozart et Beethoven ont sculpte des sonorites
+========================================================
