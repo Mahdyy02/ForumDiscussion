@@ -12,8 +12,8 @@ typedef struct{
     char* Adresse_email;
     char* Password;
     char* Pseudo;
-    unsigned short int Administrateur;
-    unsigned short int Interdit;
+    unsigned short int Administrateur; // 1 si administrateur 
+    unsigned short int Interdit; // 1 si interdit
 
 }UTILISATEUR;
 

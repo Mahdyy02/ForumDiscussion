@@ -4,6 +4,7 @@
 #include "global.h"
 #include <string.h>
 #include <ctype.h>
+#include <windows.h>
 
 #define MAX_STRING_LENGTH 100
 #define MAX_LINE_LENGTH 256
@@ -33,11 +34,16 @@ int first_index(char* s, int size, char c){
 
 void inscription(UTILISATEUR* u){
 
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
     printf("********************************************************\n");
     printf("*                                                      *\n");
     printf("*               Interface d'inscription                *\n");
     printf("*                                                      *\n");
     printf("********************************************************\n");
+
+    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
     while(1){
         printf("Nom: ");
@@ -144,8 +150,10 @@ void inscription(UTILISATEUR* u){
     (u->Pseudo)[strlen(u->Pseudo) - 1] = '\0'; 
 
     u->Interdit = 0;
-    u->Numero_inscription = ++(f.Nombre_utilisateurs);
+    u->Numero_inscription = f.Nombre_utilisateurs++;
     sauvegarder_utilisateur(*u);
+    f.Utilisateurs = (UTILISATEUR*) realloc(f.Utilisateurs, (f.Nombre_utilisateurs)*sizeof(UTILISATEUR));
+    memcpy(&f.Utilisateurs[u->Numero_inscription], u, sizeof(UTILISATEUR));
 
     printf("Félicitations vous êtes inscrits avec succés.\n");
 
@@ -220,11 +228,17 @@ void affichage(UTILISATEUR u){
     unsigned int jours_dans_le_forum = 1 + date_actuelle().jour - date_premier_message.jour + 30*(date_actuelle().mois - date_premier_message.mois) + 365*(date_actuelle().annee - date_premier_message.annee);
 
     printf("\n");
+
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
     printf("********************************************************\n");
     printf("*                                                      *\n");
     printf("*                 Profil de %s                  *\n", u.Pseudo);
     printf("*                                                      *\n");
     printf("********************************************************\n");
+
+    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
     printf("Nom: %s\n", u.Nom);
     printf("Prénom: %s\n", u.Prenom);
@@ -253,7 +267,7 @@ void sauvegarder_utilisateur(UTILISATEUR u){
     u.Administrateur = 0;
     u.Numero_inscription = f.Nombre_utilisateurs - 1;
 
-    fprintf(Fichier_utilisateurs ,"%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i\n", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_telephone, u.Numero_inscription, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur);
+    fprintf(Fichier_utilisateurs ,"\n%s;%s;%s;%i/%i/%i;%i;%i;%s;%s;%s;%i;%i", u.Nom, u.Prenom, u.Adresse, u.Date_de_naissance.jour, u.Date_de_naissance.mois, u.Date_de_naissance.annee, u.Numero_telephone, u.Numero_inscription, u.Adresse_email, u.Password, u.Pseudo, u.Administrateur, u.Interdit);
 
     fclose(Fichier_utilisateurs);
 
