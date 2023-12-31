@@ -1,0 +1,14 @@
+Numero d'inscription: 7
+Supprimé: 0
+Titre: Langage_Universel
+Date de poste: 30/12/2023
+Type: 1
+Message: Le sport agit comme un langage universel
+========================================================
+Numero d'inscription: 0
+Supprimé: 0
+Titre: Langage_Universel
+Date de poste: 30/12/2023
+Type: 0
+Message: Il offre un moyen unique de rassembler des personnes de tous horizons
+========================================================

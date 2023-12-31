@@ -1,0 +1,7 @@
+Numero d'inscription: 7
+Supprimé: 0
+Titre: Magie_de_la_scene
+Date de poste: 30/12/2023
+Type: 1
+Message: La magie de la scene reside dans la presence physique des acteurs
+========================================================
