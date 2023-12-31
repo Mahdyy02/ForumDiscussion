@@ -2,11 +2,15 @@
 #include <stdlib.h>
 #include "global.h"
 #include <string.h>
+#include <windows.h>
 
 #define MAX_STRING_LENGTH 100
 
 void Menu_message(Liste_message* LM, RUBRIQUE *r){
-        while(1){
+    while(1){
+        
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
         printf("\n********************************************************\n");
         printf("*                                                      *\n");
@@ -14,18 +18,21 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
         printf("*                                                      *\n");
         printf("********************************************************\n");
 
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
         printf("1. Voir tout les messages\n");
         printf("2. Repondre a une question\n");
-        printf("3. Modifier votre messages\n");
-        printf("4. Retour vers le menu des rubriques\n");
-        printf("5. Quitter\n");
+        printf("3. Modifier vos messages\n");
+        printf("4. Supprimer ou instaurer vos messages\n");
+        printf("5. Retour vers le menu des rubriques\n");
+        printf("6. Quitter\n");
 
         unsigned short int choix;
         printf("Donnez votre choix: "); scanf("%hu", &choix);
 
         while(getchar() != '\n');
 
-        if(choix == 4) break;
+        if(choix == 5) break;
 
         switch (choix){
         case 1:{
@@ -62,7 +69,7 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
                 unsigned int i = 1;
                 while(i < sous_choix){
                     iter_message = iter_message->Suivant;
-                    if (iter_message->Valeur.Question) i++;
+                    if (iter_message->Valeur.Question) i++; // Avoir seulement la i-ème question et sauter les réponses
                 }
                 MESSAGE m = iter_message->Valeur;
                 printf("1. Repondre anonymement\n");
@@ -103,7 +110,43 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
             unsigned int nombre_questions = 1;
             Noeud_message *iter_message = LM->tete;
             while(iter_message !=NULL){
-                if(iter_message->Valeur.Numero_inscription == u.Numero_inscription) printf("%i. %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
+                if(iter_message->Valeur.Numero_inscription == u.Numero_inscription) printf("%i. %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur); // si les numeros d'inscriptions matchent cad l'utilisateur actuel est l'auteur de ce message
+                iter_message = iter_message->Suivant;
+            }
+            printf("%i. Retour vers le menu précedant\n", nombre_questions);
+            printf("%i. Quiter\n", nombre_questions+1);
+
+            unsigned int sous_choix;
+            printf("Donnez votre choix: "); scanf("%u", &sous_choix);
+
+            while(getchar() != '\n');
+
+            if(sous_choix == nombre_questions) break;
+            if(sous_choix == nombre_questions+1){
+                free_utilisateurs();
+                detruire_liste_rubrique(&f.Rubriques);
+                exit(EXIT_SUCCESS);
+            }    
+            if(sous_choix > 0 && sous_choix < nombre_questions){
+                Noeud_message *iter_message = LM->tete;
+                unsigned int i = 1;
+                while(i < sous_choix){
+                    iter_message = iter_message->Suivant;
+                    if (iter_message->Valeur.Numero_inscription == u.Numero_inscription) i++; // sauter les messages non ecrites par l'utilisateur actuel
+                }
+                affichage_message(iter_message->Valeur);
+                modifier_message(r, LM, &iter_message->Valeur);
+            }
+            break;    
+        }
+        case 4:{
+            unsigned int nombre_questions = 1;
+            Noeud_message *iter_message = LM->tete;
+            while(iter_message !=NULL){
+                if(iter_message->Valeur.Numero_inscription == u.Numero_inscription){
+                    if(!iter_message->Valeur.Supprime) printf("%i. Supprimer %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
+                    else printf("%i. Instaurer %s\n", nombre_questions++, iter_message->Valeur.Messages.tete->Valeur);
+                } 
                 iter_message = iter_message->Suivant;
             }
             printf("%i. Retour vers le menu précedant\n", nombre_questions);
@@ -127,18 +170,17 @@ void Menu_message(Liste_message* LM, RUBRIQUE *r){
                     iter_message = iter_message->Suivant;
                     if (iter_message->Valeur.Numero_inscription == u.Numero_inscription) i++;
                 }
-                affichage_message(iter_message->Valeur);
-                modifier_message(r, LM, &iter_message->Valeur);
+                basculer_supression_message(r, *LM, &iter_message->Valeur);
             }
-            break;    
+            break; 
         }
-        case 5:{
+        case 6:{
             free_utilisateurs();
             detruire_liste_rubrique(&f.Rubriques);
             exit(EXIT_SUCCESS);            
         }
         default:
-            if(choix != 4) printf("Votre choix est invalide.\n");
+            if(choix != 5) printf("Votre choix est invalide.\n");
             break;
         }
 
@@ -149,11 +191,16 @@ void Menu_rubrique(RUBRIQUE *r){
 
     while(1){
 
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
         printf("\n********************************************************\n");
         printf("*                                                      *\n");
         printf("*                  Theme: %s                  *\n", r->Theme);
         printf("*                                                      *\n");
         printf("********************************************************\n");
+
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
         printf("1. Ecrire un message dans la rubrique\n");
         printf("2. Voir la liste des messages dans la rubrique\n");
@@ -228,11 +275,16 @@ void Menu_rubriques(){
 
     while(1){
 
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
         printf("\n********************************************************\n");
         printf("*                                                      *\n");
         printf("*                  Menu Des Rubriques                  *\n");
         printf("*                                                      *\n");
         printf("********************************************************\n");
+
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     
         printf("1. Voir les messages du jour\n");
         printf("2. Voir les rubriques\n");
@@ -253,6 +305,9 @@ void Menu_rubriques(){
             }
             case 2:{
                 while(1){
+
+                    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+                    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
                 
                     printf("\n********************************************************\n");
                     printf("*                                                      *\n");
@@ -260,11 +315,13 @@ void Menu_rubriques(){
                     printf("*                                                      *\n");
                     printf("********************************************************\n");
 
+                    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
 
                     Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
                     unsigned int nombre_rubriques = 1;
                     while(iter_rubrique != NULL){
-                        printf("%i. %s\n",nombre_rubriques ,iter_rubrique->valeur.Theme);
+                        printf("%i. %s\n", nombre_rubriques, iter_rubrique->valeur.Theme);
                         nombre_rubriques++;
                         iter_rubrique = iter_rubrique->Suivant;
                     }
@@ -322,12 +379,17 @@ void Menu_rubriques(){
 void Menu_invite(){
 
     while(1){
+
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     
         printf("\n********************************************************\n");
         printf("*                                                      *\n");
         printf("*                  Page Des Rubriques                  *\n");
         printf("*                                                      *\n");
         printf("********************************************************\n");
+
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
 
         Noeud_rubrique *iter_rubrique = f.Rubriques.tete;
@@ -370,11 +432,16 @@ void Menu_administrateur(){
 
     while(1){
 
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
         printf("********************************************************\n");
         printf("*                                                      *\n");
         printf("*                 Page d'administration                *\n");
         printf("*                                                      *\n");
         printf("********************************************************\n");
+
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
         printf("1. Voir la liste de tout les utilisateurs\n");
         printf("2. Voir tout les rubriques\n");
@@ -396,20 +463,20 @@ void Menu_administrateur(){
                 if (f.Utilisateurs[i].Numero_inscription == u.Numero_inscription) printf("%i. %s (Vous)\n", i+1, f.Utilisateurs[i].Pseudo); 
                 else printf("%i. %s\n", i+1, f.Utilisateurs[i].Pseudo);
             }    
-            printf("%i. Retour vers le menu precedant\n", f.Nombre_utilisateurs+2);
-            printf("%i. Quitter\n", f.Nombre_utilisateurs+3);
+            printf("%i. Retour vers le menu precedant\n", f.Nombre_utilisateurs+1);
+            printf("%i. Quitter\n", f.Nombre_utilisateurs+2);
             
             unsigned int sous_choix;
             printf("Donnez le choix: "); scanf("%i", &sous_choix);
             while(getchar() != '\n');
 
-            if(sous_choix == f.Nombre_utilisateurs+2) break;
-            if(sous_choix == f.Nombre_utilisateurs+3){
+            if(sous_choix == f.Nombre_utilisateurs+1) break;
+            if(sous_choix == f.Nombre_utilisateurs+2){
                 detruire_liste_rubrique(&f.Rubriques);
                 free_utilisateurs();
                 exit(EXIT_SUCCESS);
             }
-            if(sous_choix > 0 && sous_choix <= f.Nombre_utilisateurs+1){
+            if(sous_choix >= 1 && sous_choix <= f.Nombre_utilisateurs){
                 affichage(f.Utilisateurs[sous_choix-1]);
 
                 printf("1. Voir tout les messages de %s(%i)\n", f.Utilisateurs[sous_choix-1].Pseudo, f.Utilisateurs[sous_choix-1].Numero_inscription);
@@ -518,11 +585,17 @@ void Menu_administrateur(){
             
         }
         case 3:{
+
+            HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+            SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
             printf("********************************************************\n");
             printf("*                                                      *\n");
             printf("*                     Statistiques                     *\n");
             printf("*                                                      *\n");
             printf("********************************************************\n");
+
+            SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
             printf("Le jours le plus active est: %s.\n\n", jours_plus_active());
 
@@ -559,18 +632,23 @@ int main(){
 
     f.Nombre_invites = 0;
 
-    f.Adresse_internet = strdup("www.forum.com");
+    f.Adresse_internet = strdup("www.forum.com"); // strdup fait l'allocation dynamique du variable assigné ansi que l'assignement de la valeur passée en argument
     saisir_forum();
 
     charger_utilisateur();
 
     while(1){
+
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
         
         printf("********************************************************\n");
         printf("*                                                      *\n");
         printf("*                    Page d'accueil                    *\n");
         printf("*                                                      *\n");
         printf("********************************************************\n");
+
+        SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
         printf("1. S'inscrire en tant que invité\n");
         printf("2. S'inscrire en tant que utilisateur\n");
